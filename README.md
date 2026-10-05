@@ -2,7 +2,7 @@
 
 SpaceTrace is a binaural HRTF spatializer built to keep spatial audio practical whether you work with a mouse, keyboard, screen reader, host automation, or the host's generic parameter view.
 
-The 1.0 release candidate ships five heads:
+The 1.0 release ships five heads:
 
 1. IRCAM LISTEN 1050
 2. MIT KEMAR Normal Pinna
