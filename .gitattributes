@@ -19,3 +19,7 @@ CMakeLists.txt text eol=lf
 *.zip binary
 *.clap binary
 *.vst3 binary
+
+# Release provenance records exact SHA-256 bytes, including line endings.
+# Preserve those bytes through Git checkouts and GitHub source archives.
+* -text
