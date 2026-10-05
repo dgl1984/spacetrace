@@ -1,0 +1,8 @@
+JUCE 8.0.12 notice
+
+SpaceTrace is built with JUCE 8.0.12. JUCE is not licensed by Lanes Audio and is not covered by SpaceTrace's LICENSE.txt. JUCE retains the terms offered by its copyright holder.
+
+JUCE 8 licensing information: https://juce.com/legal/juce-8-licence/
+JUCE source repository: https://github.com/juce-framework/JUCE
+
+The SpaceTrace release process must use a JUCE licensing route that permits the intended binary distribution. The SpaceTrace first-party license and the licenses of bundled HRTF datasets do not grant any rights to JUCE.

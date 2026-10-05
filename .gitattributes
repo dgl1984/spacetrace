@@ -1,0 +1,21 @@
+# Normalize text; never apply line-ending conversion to audio/data assets.
+* text=auto
+*.md text eol=lf
+*.py text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+*.json text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.sthrtf binary
+*.sofa binary
+*.wav binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ttm binary
+*.zip binary
+*.clap binary
+*.vst3 binary

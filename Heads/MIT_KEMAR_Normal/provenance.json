@@ -1,0 +1,30 @@
+{
+  "sourceFile": "mit_kemar_normal_pinna.sofa",
+  "sourceSha256": "e7035994f5fd754058424c061380ee92b1d5ed58fccef2887a4266916616acdf",
+  "sourceUrl": "https://sofacoustics.org/data/database/mit/mit_kemar_normal_pinna.sofa",
+  "sourceFormat": "SOFA",
+  "database": "MIT KEMAR",
+  "subject": "KEMAR normal pinna",
+  "license": "README for ftp://sound.media.mit.edu/pub/Data/KEMAR\n\nThis ftp archive is maintained by Bill Gardner <billg@media.mit.edu>\nand Keith Martin <kdm@media.mit.edu>. It contains a set of\nhead-related transfer function (HRTF) measurements of a KEMAR\ndummy-head microphone and related software.\n\nThis data is Copyright 1994 by the MIT Media Laboratory. It is\nprovided free with no restrictions on use, provided the authors\nare cited when the data is used in any research or commercial\napplication.\n\nBill Gardner <billg@media.mit.edu>\nKeith Martin <kdm@media.mit.edu>\nMIT Media Lab Machine Listening Group\nMay 18, 1994\n\nlast revision: June 20, 1996\n",
+  "attribution": "Bill Gardner and Keith Martin, MIT Media Lab Machine Listening Group",
+  "conversion": "SpaceTrace runtime preparation",
+  "conversionNotes": "Raw MIT KEMAR Normal Pinna SOFA HRIRs with coordinates normalized to the SpaceTrace convention",
+  "runtime": {
+    "sampleRate": 44100.0,
+    "measurements": 710,
+    "taps": 512,
+    "sampleStorage": "float32 runtime representation"
+  },
+  "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
+  "monoLevelCalibration": {
+    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
+    "referenceSampleRate": 44100.0,
+    "referenceGainBeforeDb": -4.673739108080699,
+    "monoTrimDb": 4.673739,
+    "headSha256": "9be279b26f9d094b44f55dc37f73fd1022794dec07406d77d6ed1ddc57e53ce6",
+    "correctionSha256": "02c4e54ea9161e881d2b8f2ad4223667f9d1599f43845015fbb9398d62fc9155",
+    "headLevelTrimDb": 0.0,
+    "leftGainDb": -0.0,
+    "rightGainDb": 0.0
+  }
+}

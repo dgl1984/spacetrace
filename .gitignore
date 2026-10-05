@@ -1,0 +1,38 @@
+# Local build outputs and generated IDE files
+/build*/
+/cmake-build*/
+/out/
+.vs/
+*.user
+*.suo
+
+# Downloaded dependencies and local dataset caches
+/deps/
+/.cache/
+
+# Local audit/recovery evidence and generated graphs
+/.audit/
+/graphify-out/
+/BUILD_WINDOWS_LOG.txt
+
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Heads/, resources/, and their notices remain visible for review.
+# No binary-asset distribution or Git LFS policy is selected here.
+
+# Prepared source/release archives
+/exports/

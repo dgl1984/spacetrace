@@ -1,0 +1,68 @@
+SpaceTrace 1.0 — Third-party notices
+======================================
+
+SpaceTrace software and the bundled HRTF/head data are separate works with separate terms. LICENSE.txt covers only Lanes Audio first-party material where no more specific license is stated. A head package keeps the license/notice that belongs to its source data.
+
+1. IRCAM LISTEN 1050
+---------------------
+Source: IRC_1050_R_44100.sofa
+Official source: https://sofacoustics.org/data/database/listen%20%28hrtf%29/IRC_1050_R_44100.sofa
+Copyright: (c) 2014-2017 IRCAM. All Rights Reserved.
+Attribution carried by SpaceTrace: IRCAM LISTEN HRTF Database; Olivier Warusfel and the IRCAM Room Acoustics Team.
+
+The preserved IRCAM notice grants educational, research and commercial use, requires the copyright notice to accompany reproductions when present, requests acknowledgment in published research, and requests written acknowledgment for commercial-product use. SpaceTrace's .sthrtf is a converted runtime representation: 128-tap minimum-phase ear responses plus explicit per-ear delay derived from the official SOFA. No HRTF bytes from historical games are redistributed.
+
+Full preserved notice: IRCAM_LISTEN_NOTICE.txt and Heads/IRCAM_1050/LICENSE.txt
+
+2. MIT KEMAR Normal Pinna
+--------------------------
+Source: mit_kemar_normal_pinna.sofa
+Official SOFA mirror: https://sofacoustics.org/data/database/mit/mit_kemar_normal_pinna.sofa
+Copyright: 1994 MIT Media Laboratory.
+Attribution: Bill Gardner and Keith Martin, MIT Media Lab Machine Listening Group.
+
+The preserved original README says the data is provided free with no restrictions on use provided the authors are cited in research or commercial applications. SpaceTrace converts the source HRIRs/coordinates to its runtime representation and keeps the original notice.
+
+Full preserved notice: MIT_KEMAR_NOTICE.txt and Heads/MIT_KEMAR_Normal/LICENSE.txt
+
+3. SADIE II D1 / Neumann KU100
+--------------------------------
+Source: D1_44K_16bit_256tap_FIR_SOFA.sofa from SADIE II
+Current archive DOI: https://doi.org/10.5281/zenodo.12092466
+Copyright: 2018 University of York.
+License: Apache License 2.0.
+
+The SADIE notice requires the original dataset to be referenced whenever used in original or modified form. SpaceTrace converts subject D1 coordinates/data to .sthrtf and supplies a separate global Tone Trace correction. The bundled head files carry a prominent SpaceTrace change notice while retaining the SADIE attribution and Apache 2.0 terms.
+
+Associated publication: C. Armstrong, L. Thresh, D. T. Murphy, and G. C. Kearney, “A Perceptual Evaluation of Individual and Non-Individual HRTFs: A Case Study of the SADIE II Database,” Applied Sciences 8(11):2029, 2018.
+
+Full license/notice: SADIE_II_LICENSE.txt and Heads/KU100_SADIE_D1/LICENSE.txt
+
+4. TH Köln / Bernschütz FULL2DEG KU100
+---------------------------------------
+Source: HRIR_FULL2DEG.sofa
+Source DOI: https://doi.org/10.5281/zenodo.3928297
+Creator: Benjamin Bernschütz, Technische Hochschule Köln
+License applied by SpaceTrace: CC BY-SA 3.0 Unported.
+
+There is conflicting record-level metadata on the modern Zenodo page, but the preserved SOFA says “CC 3.0 BY-SA” and the author's publication for this compilation explicitly identifies CC BY-SA 3.0. SpaceTrace therefore follows the more specific source/publication evidence. The .sthrtf is an adaptation because it changes format/precision/coordinate representation. SpaceTrace also places the FULL2DEG-specific Tone Trace model, correction and generated correction documentation under CC BY-SA 3.0 as a conservative boundary. ShareAlike applies to those adaptations, not to unrelated SpaceTrace code or the other works merely collected beside them.
+
+Attribution/change notice: FULL2DEG_CC_BY_SA_3_0.txt and Heads/KU100_FULL2DEG/LICENSE.txt
+
+5. FABIAN HATO 0
+-----------------
+Source: FABIAN_HRIR_measured_HATO_0.sofa
+Source record: https://depositonce.tu-berlin.de/handle/11303/6153
+License: CC BY 4.0 International.
+
+SpaceTrace converts the SOFA to .sthrtf and generates FABIAN-specific correction/calibration documentation. The source metadata's modelled substitutions below 200 Hz / below -64° elevation remain part of the source dataset's provenance and are disclosed.
+
+Attribution/change notice: FABIAN_CC_BY_4_0.txt and Heads/FABIAN_HATO0/LICENSE.txt
+
+6. JUCE 8.0.12
+---------------
+JUCE is a build/framework dependency with its own licensing terms. See JUCE_NOTICE.txt. A binary SpaceTrace release must be made under a JUCE license route that permits that distribution. SpaceTrace's first-party license does not relicense JUCE.
+
+7. CLAP and CLAP/JUCE wrapper support
+-------------------------------------
+SpaceTrace's CLAP wrapper uses the pinned free-audio CLAP, clap-helpers and clap-juce-extensions projects. Their MIT-style license texts are included as CLAP_LICENSE.txt, CLAP_HELPERS_LICENSE.txt and CLAP_JUCE_EXTENSIONS_LICENSE.txt. VST3 and CLAP still use the same SpaceTrace processor/editor/state implementation.

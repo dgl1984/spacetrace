@@ -1,0 +1,18 @@
+FABIAN HRTF database, HATO 0° — CC BY 4.0 notice
+
+Source work: FABIAN_HRIR_measured_HATO_0.sofa
+Dataset: FABIAN HRTF database, HATO 0 degrees
+Source: https://depositonce.tu-berlin.de/handle/11303/6153
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+License deed: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+SpaceTrace changes:
+- converted the source SOFA HRIR samples to the SpaceTrace .sthrtf runtime format;
+- normalized source coordinates to SpaceTrace's canonical convention;
+- stores runtime samples as float32;
+- generated a head-specific Tone Trace tonal correction, correction model/plots/descriptions, level trim and front-center calibration for SpaceTrace.
+
+The source metadata notes that HRIRs below 200 Hz and elevations below -64° contain numerically modelled substitutions made by the FABIAN dataset authors. SpaceTrace does not present those substitutions as its own measurements.
+
+SpaceTrace distributes the converted FABIAN runtime data and its FABIAN-specific response-derived correction documentation under CC BY 4.0, with the attribution and change notice above. Other SpaceTrace software/material is separately licensed; see LICENSE.txt.

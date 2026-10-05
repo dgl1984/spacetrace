@@ -1,0 +1,18 @@
+TH Köln / Bernschütz FULL2DEG KU100 — CC BY-SA 3.0 notice
+
+Source work: HRIR_FULL2DEG.sofa / THK HRIR_FULL2DEG MKII
+Creator/attribution: Benjamin Bernschütz, Technische Hochschule Köln
+Source: https://doi.org/10.5281/zenodo.3928297
+License: Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+License deed: https://creativecommons.org/licenses/by-sa/3.0/
+Legal code: https://creativecommons.org/licenses/by-sa/3.0/legalcode
+
+SpaceTrace changes:
+- converted the source SOFA HRIR samples to the SpaceTrace .sthrtf runtime format;
+- normalized source coordinates to SpaceTrace's canonical convention;
+- stores runtime samples as float32;
+- generated a head-specific Tone Trace tonal correction, correction model/plots/descriptions, level trim and front-center calibration for SpaceTrace.
+
+SpaceTrace treats the converted .sthrtf and, conservatively, the FULL2DEG-specific correction/model/plot material as adapted material under CC BY-SA 3.0. Those files may be redistributed and adapted under the license above with attribution, an indication of changes, and ShareAlike for adaptations.
+
+The rest of SpaceTrace is a collection alongside this material and is not relicensed under CC BY-SA 3.0. See LICENSE.txt and THIRD_PARTY_NOTICES.txt.

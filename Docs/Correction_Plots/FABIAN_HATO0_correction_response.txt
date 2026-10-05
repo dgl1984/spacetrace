@@ -1,0 +1,11 @@
+Correction plot audit — FABIAN HATO 0 — Dataset Correction
+Source type: correction WAV frequency response
+Plotted range: 20-20000 Hz (log-frequency axis)
+Strongest boost in plotted range: +15.01 dB at approximately 20000 Hz
+Deepest cut in plotted range: -9.87 dB at approximately 3947 Hz
+Broad-band means:
+- low bass / low mids (80-250 Hz): mean +5.64 dB
+- low mids / mids (250-1000 Hz): mean +4.48 dB
+- mids / presence (1000-4000 Hz): mean -3.67 dB
+- upper mids / treble (4000-16000 Hz): mean +0.76 dB
+Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.

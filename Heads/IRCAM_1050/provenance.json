@@ -1,0 +1,83 @@
+{
+  "sourceFile": "IRC_1050_R_44100.sofa",
+  "sourceSha256": "5efc0dcc002551313b60a9bce6c957db1b07c8d25d1474c9f9333c5175c4dd83",
+  "sourceUrl": "https://sofacoustics.org/data/database/listen%20%28hrtf%29/IRC_1050_R_44100.sofa",
+  "sourceFormat": "SOFA",
+  "database": "IRCAM LISTEN",
+  "subject": "1050",
+  "license": "Copyright :\nCopyright (c) 2014 - 2017 IRCAM. All Rights Reserved \nDisclaimer : \nIRCAM MAKES NO REPRESENTATION OR WARRANTIES WITH RESPECT TO THE CONTENTS HEREOF AND SPECIFICALLY DISCLAIM ANY IMPLIED WARRANTIES OR MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE. Further, IRCAM reserves the right to revise this database and/or documentation and to make changes from time to time in the content hereof without obligation of IRCAM to notify any person of such revision or change. \nUse of Materials : \nIRCAM hereby grants users permission to use materials available therein for any purpose-educational, research or commercial. However, each reproduction of any part of the materials must include the copyright notice, if it is present. In addition, as a courtesy, if these materials are used in published research, this use should be acknowledged in the publication. as follows : UMR 9912 - STMS - IRCAM/CNRS/UPMC, 1, place Stravinsky 75004 PARIS FRANCE If these materials are used in the development of commercial products, IRCAM requests that written acknowledgment of such use be sent to: \nIRCAM - 1, place Stravinsky 75004 PARIS FRANCE\n",
+  "attribution": "IRCAM LISTEN HRTF Database; Olivier Warusfel and the IRCAM Room Acoustics Team",
+  "conversion": "SpaceTrace runtime preparation",
+  "conversionNotes": "SpaceTrace default preparation: 128-tap minimum-phase HRIRs generated from the official IRCAM LISTEN 1050 SOFA data; onset and broadband interaural delay preserved on a quarter-sample grid; no historical game asset is redistributed",
+  "runtime": {
+    "sampleRate": 44100.0,
+    "measurements": 187,
+    "taps": 128,
+    "sampleStorage": "float32 runtime representation"
+  },
+  "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
+  "stereoPairResidualComposition": {
+    "date": "2026-10-05",
+    "componentsDirectory": "Docs/Correction_Models/StereoPair/Components/IRCAM_1050",
+    "componentSha256": {
+      "residual.wav": "9461886a3fa6a2e9b07a1ece31a934d27fe8b51d32dc4286c62cd74e768d7a22",
+      "residual.ttm": "e1e799265a0d52da1de96ee094a57014c36efc71f9aab00999449a6250354806",
+      "base_left.wav": "a526e5cf2aa8746c234b02d164852f3f9db5b03cf696c7f95405fee616df5561",
+      "base_right.wav": "9b7235b7d625763832e81c9db392c8492927e6433ea8639922b05729175329a0"
+    },
+    "preservedGainFields": {
+      "levelTrimDb": 0.0,
+      "leftGainDb": 0.663791,
+      "rightGainDb": -0.663791,
+      "stereoPairLeftGainDb": -1.570725,
+      "stereoPairRightGainDb": 1.570725,
+      "stereoPairTrimDb": -0.452849
+    },
+    "capture": "Dataset Corrected, Stereo Pair, selected head, otherwise default settings; host pan centered",
+    "method": "Convolve each preserved base source-leg correction with the common residual, then apply a half-cosine fade over the final 40 ms",
+    "gainPolicy": "No normalization or gain makeup; existing source/ear balance and fixed trims preserved; tiny response change from final tail taper quantified in results",
+    "runtime": "Existing source-leg convolutions only; active at all Stereo Pair positions in Dataset Corrected mode",
+    "head1OutputBalance": "Separate pending calibration; not included in this EQ composition",
+    "reproduce": "python scripts/compose_corrections.py <components>/base_left.wav <components>/residual.wav Heads/<head>/stereo_pair_left_correction.wav --tail-fade-ms 40 --overwrite (repeat with right)",
+    "results": {
+      "left": {
+        "sampleRate": 48000,
+        "baseTaps": 8640,
+        "residualTaps": 8640,
+        "outputTaps": 17279,
+        "durationSeconds": 0.3599791666666667,
+        "normalizationDb": 0.0,
+        "tailFadeMs": 40,
+        "tailFadeSamples": 1920,
+        "tailFadeShape": "half cosine",
+        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
+        "maxMagnitudeChange20HzTo20kHzDb": 0.00012794078350667488
+      },
+      "right": {
+        "sampleRate": 48000,
+        "baseTaps": 8640,
+        "residualTaps": 8640,
+        "outputTaps": 17279,
+        "durationSeconds": 0.3599791666666667,
+        "normalizationDb": 0.0,
+        "tailFadeMs": 40,
+        "tailFadeSamples": 1920,
+        "tailFadeShape": "half cosine",
+        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
+        "maxMagnitudeChange20HzTo20kHzDb": 0.00017184536353545093
+      }
+    },
+    "license": "Retain the corresponding head LICENSE.txt and Licenses/THIRD_PARTY_NOTICES.txt terms for all head-derived components and plots"
+  },
+  "monoLevelCalibration": {
+    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
+    "referenceSampleRate": 44100.0,
+    "referenceGainBeforeDb": -5.368666964933175,
+    "monoTrimDb": 5.368667,
+    "headSha256": "c89edc84458b4bceb01198db75b951a096675d22e05b2cabf70ce4173f8e0de1",
+    "correctionSha256": "1557a5a26e15537d486bdefa277d4ea9702016b040ad0901668dbe5f0870cbd7",
+    "headLevelTrimDb": 0.0,
+    "leftGainDb": 0.663791,
+    "rightGainDb": -0.663791
+  }
+}

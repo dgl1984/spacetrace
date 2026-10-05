@@ -1,0 +1,83 @@
+{
+  "sourceFile": "HRIR_FULL2DEG.sofa",
+  "sourceSha256": "d3671e6829323b93b7ae95aff6d9316d15d6c128b7f2ab615c21cc3ab085ddb7",
+  "sourceUrl": "https://zenodo.org/records/3928297/files/HRIR_FULL2DEG.sofa?download=1",
+  "sourceFormat": "SOFA",
+  "database": "THK",
+  "subject": "HRIR_FULL2DEG MKII",
+  "license": "CC 3.0 BY-SA",
+  "attribution": "Benjamin Bernschütz / Technische Hochschule Köln; Neumann KU100; source SOFA HRIR_FULL2DEG.sofa; CC BY-SA 3.0",
+  "conversion": "SpaceTrace runtime preparation",
+  "conversionNotes": "Raw SOFA HRIR samples converted to float32; source coordinates normalized to the SpaceTrace canonical convention",
+  "runtime": {
+    "sampleRate": 48000.0,
+    "measurements": 16020,
+    "taps": 128,
+    "sampleStorage": "float32 runtime representation"
+  },
+  "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
+  "stereoPairResidualComposition": {
+    "date": "2026-10-05",
+    "componentsDirectory": "Docs/Correction_Models/StereoPair/Components/KU100_FULL2DEG",
+    "componentSha256": {
+      "residual.wav": "0215f26eebfb49187a0e195ee943fed7a5fea034c562cadca9c1fa6948b0ffab",
+      "residual.ttm": "c73a26bfa6ede9452b235c39002aa66b9324663f36ef4bcf5e3ed961473ec96e",
+      "base_left.wav": "efee71873cd6bdb6ccfb5d7349e57cd9f6f204036ebebcbf30948e9bd082ad23",
+      "base_right.wav": "c60c65c03be2979dfa904dbf8523ceb68ec8856170a750fda791fb9d34f7b71b"
+    },
+    "preservedGainFields": {
+      "levelTrimDb": -4.13,
+      "leftGainDb": 0.140995,
+      "rightGainDb": -0.140995,
+      "stereoPairLeftGainDb": -0.069705,
+      "stereoPairRightGainDb": 0.069705,
+      "stereoPairTrimDb": -0.481257
+    },
+    "capture": "Dataset Corrected, Stereo Pair, selected head, otherwise default settings; host pan centered",
+    "method": "Convolve each preserved base source-leg correction with the common residual, then apply a half-cosine fade over the final 40 ms",
+    "gainPolicy": "No normalization or gain makeup; existing source/ear balance and fixed trims preserved; tiny response change from final tail taper quantified in results",
+    "runtime": "Existing source-leg convolutions only; active at all Stereo Pair positions in Dataset Corrected mode",
+    "head1OutputBalance": "Separate pending calibration; not included in this EQ composition",
+    "reproduce": "python scripts/compose_corrections.py <components>/base_left.wav <components>/residual.wav Heads/<head>/stereo_pair_left_correction.wav --tail-fade-ms 40 --overwrite (repeat with right)",
+    "results": {
+      "left": {
+        "sampleRate": 48000,
+        "baseTaps": 8640,
+        "residualTaps": 8640,
+        "outputTaps": 17279,
+        "durationSeconds": 0.3599791666666667,
+        "normalizationDb": 0.0,
+        "tailFadeMs": 40,
+        "tailFadeSamples": 1920,
+        "tailFadeShape": "half cosine",
+        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
+        "maxMagnitudeChange20HzTo20kHzDb": 3.531353248479974e-05
+      },
+      "right": {
+        "sampleRate": 48000,
+        "baseTaps": 8640,
+        "residualTaps": 8640,
+        "outputTaps": 17279,
+        "durationSeconds": 0.3599791666666667,
+        "normalizationDb": 0.0,
+        "tailFadeMs": 40,
+        "tailFadeSamples": 1920,
+        "tailFadeShape": "half cosine",
+        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
+        "maxMagnitudeChange20HzTo20kHzDb": 6.760410935562137e-05
+      }
+    },
+    "license": "Retain the corresponding head LICENSE.txt and Licenses/THIRD_PARTY_NOTICES.txt terms for all head-derived components and plots"
+  },
+  "monoLevelCalibration": {
+    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
+    "referenceSampleRate": 48000.0,
+    "referenceGainBeforeDb": -4.573632530365116,
+    "monoTrimDb": 4.573633,
+    "headSha256": "d806410481923b824d61b3304e342d8f7f7cde5ff3f62b8811024ee29e51c41e",
+    "correctionSha256": "e31fe3881265c6cfa15f6083808987a7e62f9672b1e6bdec62b5bb63c7603845",
+    "headLevelTrimDb": -4.13,
+    "leftGainDb": 0.140995,
+    "rightGainDb": -0.140995
+  }
+}

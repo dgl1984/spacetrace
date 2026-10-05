@@ -1,0 +1,38 @@
+SpaceTrace head channel calibration
+==================================
+
+Why this exists
+---------------
+A dataset can label a measurement as 0 degrees / front-center while the measured
+left and right broadband levels are not perfectly equal. SpaceTrace measures that
+condition instead of assuming every nominal 0-degree HRIR is centered.
+
+The calibration is a pair of fixed equal-and-opposite gains stored in manifest.json.
+It does not modify head.sthrtf or correction.wav. Equal-and-opposite dB gains preserve
+the geometric mean of the gains while centering the nominal front response.
+They do not preserve total stereo energy exactly; overall head trim remains a
+separate calibration. Stereo Pair source-leg balance is also separate from these
+output-ear gains.
+
+Method
+------
+- Use the native head's real 0-degree azimuth / 0-degree elevation measurement.
+- Measure each raw ear with pink weighting over 80 Hz-16 kHz.
+- Compute L-R imbalance in dB.
+- Apply half the difference in opposite directions: the quieter side is raised and
+  the hotter side is lowered by the same dB amount.
+- Reject unexpectedly large automatic corrections so coordinate/dataset problems are
+  investigated rather than hidden.
+
+Reproduce it with:
+  python scripts/analyze_head_channels.py Heads/MyHead --write-manifest
+
+Current source-tree measurements
+--------------------------------
+IRCAM LISTEN 1050: L-R -1.328 dB -> left +0.664 dB / right -0.664 dB
+MIT KEMAR Normal Pinna: L-R +0.000 dB -> left 0.000 dB / right 0.000 dB
+TH Köln KU100 FULL2DEG: L-R -0.282 dB -> left +0.141 dB / right -0.141 dB
+FABIAN HATO 0: L-R -0.582 dB -> left +0.291 dB / right -0.291 dB
+SADIE II D1 / KU100: the validated native head is included. Its manifest omits
+front-center leftGainDb/rightGainDb, so runtime ear gains default to unity.
+No front-center imbalance measurement is recorded in that manifest.

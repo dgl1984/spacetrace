@@ -1,0 +1,4 @@
+# SpaceTrace head-preparation tools. The plug-in itself has no Python dependency.
+numpy>=1.26,<3
+h5py>=3.10,<4
+matplotlib>=3.8,<4

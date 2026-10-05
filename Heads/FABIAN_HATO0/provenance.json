@@ -1,0 +1,30 @@
+{
+  "sourceFile": "FABIAN_HRIR_measured_HATO_0.sofa",
+  "sourceSha256": "83ebbcd9a09d17679b95d201c9775438c0bb1199d565c3fc7a25448a905cdc3c",
+  "sourceUrl": "https://depositonce.tu-berlin.de/handle/11303/6153",
+  "sourceFormat": "SOFA",
+  "database": "FABIAN HRTF database",
+  "subject": "HATO 0 degrees",
+  "license": "Creative Commons (CC-BY). Visit http://creativecommons.org/licenses/by/4.0/ for licence details.",
+  "attribution": "FABIAN HRTF database, HATO 0 degrees; Creative Commons Attribution 4.0 International (CC BY 4.0).",
+  "conversion": "SpaceTrace runtime preparation",
+  "conversionNotes": "Raw FABIAN HATO 0 HRIRs converted to SpaceTrace native package without tonal correction; source metadata notes frequencies below 200 Hz and elevations below -64 degrees were substituted with numerically modeled HRIRs.",
+  "runtime": {
+    "sampleRate": 44100.0,
+    "measurements": 11950,
+    "taps": 256,
+    "sampleStorage": "float32 runtime representation"
+  },
+  "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
+  "monoLevelCalibration": {
+    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
+    "referenceSampleRate": 44100.0,
+    "referenceGainBeforeDb": -3.994053225848249,
+    "monoTrimDb": 3.994053,
+    "headSha256": "412b2268db892bd5b70fe0d8cab1916c7111d6582c2268b96ce023c020c8fcbc",
+    "correctionSha256": "0aa15f28c350e246259cb211d5543b3b95d209e454b5eee0e4e46e25d696e28f",
+    "headLevelTrimDb": -9.74,
+    "leftGainDb": 0.291073,
+    "rightGainDb": -0.291073
+  }
+}
