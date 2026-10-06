@@ -16,59 +16,6 @@
     "sampleStorage": "float32 runtime representation"
   },
   "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
-  "stereoPairResidualComposition": {
-    "date": "2026-10-05",
-    "componentsDirectory": "Docs/Correction_Models/StereoPair/Components/KU100_FULL2DEG",
-    "componentSha256": {
-      "residual.wav": "0215f26eebfb49187a0e195ee943fed7a5fea034c562cadca9c1fa6948b0ffab",
-      "residual.ttm": "c73a26bfa6ede9452b235c39002aa66b9324663f36ef4bcf5e3ed961473ec96e",
-      "base_left.wav": "efee71873cd6bdb6ccfb5d7349e57cd9f6f204036ebebcbf30948e9bd082ad23",
-      "base_right.wav": "c60c65c03be2979dfa904dbf8523ceb68ec8856170a750fda791fb9d34f7b71b"
-    },
-    "preservedGainFields": {
-      "levelTrimDb": -4.13,
-      "leftGainDb": 0.140995,
-      "rightGainDb": -0.140995,
-      "stereoPairLeftGainDb": -0.069705,
-      "stereoPairRightGainDb": 0.069705,
-      "stereoPairTrimDb": -0.481257
-    },
-    "capture": "Dataset Corrected, Stereo Pair, selected head, otherwise default settings; host pan centered",
-    "method": "Convolve each preserved base source-leg correction with the common residual, then apply a half-cosine fade over the final 40 ms",
-    "gainPolicy": "No normalization or gain makeup; existing source/ear balance and fixed trims preserved; tiny response change from final tail taper quantified in results",
-    "runtime": "Existing source-leg convolutions only; active at all Stereo Pair positions in Dataset Corrected mode",
-    "head1OutputBalance": "Separate pending calibration; not included in this EQ composition",
-    "reproduce": "python scripts/compose_corrections.py <components>/base_left.wav <components>/residual.wav Heads/<head>/stereo_pair_left_correction.wav --tail-fade-ms 40 --overwrite (repeat with right)",
-    "results": {
-      "left": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 3.531353248479974e-05
-      },
-      "right": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 6.760410935562137e-05
-      }
-    },
-    "license": "Retain the corresponding head LICENSE.txt and Licenses/THIRD_PARTY_NOTICES.txt terms for all head-derived components and plots"
-  },
   "monoLevelCalibration": {
     "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
     "referenceSampleRate": 48000.0,
@@ -79,5 +26,23 @@
     "headLevelTrimDb": -4.13,
     "leftGainDb": 0.140995,
     "rightGainDb": -0.140995
+  },
+  "stereoPairCorrection": {
+    "method": "Direct independent source-leg correction IRs; constant per-leg normalization only; no residual convolution.",
+    "headNumber": 4,
+    "inputLeftSha256": "e1cc55551e5b36efe8c8fb1a1f259966d238ba5eef9724555e575f6714c6e779",
+    "inputRightSha256": "75b5c890132f1ac595343ff9c5b7935908c3951720b5491d4c80e7daa5066660"
+  },
+  "currentStereoPairFiles": {
+    "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
+    "stereoPairLeftCorrectionSha256": "f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf",
+    "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
+    "stereoPairRightCorrectionSha256": "57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207",
+    "stereoPairCorrectionName": "TH Köln KU100 FULL2DEG Stereo Pair Tonal Restoration",
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
+    "stereoPairLeftGainDb": -0.069705,
+    "stereoPairRightGainDb": 0.069705,
+    "stereoPairTrimDb": -0.481257,
+    "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0"
   }
 }

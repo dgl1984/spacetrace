@@ -16,59 +16,6 @@
     "sampleStorage": "float32 runtime representation"
   },
   "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
-  "stereoPairResidualComposition": {
-    "date": "2026-10-05",
-    "componentsDirectory": "Docs/Correction_Models/StereoPair/Components/IRCAM_1050",
-    "componentSha256": {
-      "residual.wav": "9461886a3fa6a2e9b07a1ece31a934d27fe8b51d32dc4286c62cd74e768d7a22",
-      "residual.ttm": "e1e799265a0d52da1de96ee094a57014c36efc71f9aab00999449a6250354806",
-      "base_left.wav": "a526e5cf2aa8746c234b02d164852f3f9db5b03cf696c7f95405fee616df5561",
-      "base_right.wav": "9b7235b7d625763832e81c9db392c8492927e6433ea8639922b05729175329a0"
-    },
-    "preservedGainFields": {
-      "levelTrimDb": 0.0,
-      "leftGainDb": 0.663791,
-      "rightGainDb": -0.663791,
-      "stereoPairLeftGainDb": -1.570725,
-      "stereoPairRightGainDb": 1.570725,
-      "stereoPairTrimDb": -0.452849
-    },
-    "capture": "Dataset Corrected, Stereo Pair, selected head, otherwise default settings; host pan centered",
-    "method": "Convolve each preserved base source-leg correction with the common residual, then apply a half-cosine fade over the final 40 ms",
-    "gainPolicy": "No normalization or gain makeup; existing source/ear balance and fixed trims preserved; tiny response change from final tail taper quantified in results",
-    "runtime": "Existing source-leg convolutions only; active at all Stereo Pair positions in Dataset Corrected mode",
-    "head1OutputBalance": "Separate pending calibration; not included in this EQ composition",
-    "reproduce": "python scripts/compose_corrections.py <components>/base_left.wav <components>/residual.wav Heads/<head>/stereo_pair_left_correction.wav --tail-fade-ms 40 --overwrite (repeat with right)",
-    "results": {
-      "left": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 0.00012794078350667488
-      },
-      "right": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 0.00017184536353545093
-      }
-    },
-    "license": "Retain the corresponding head LICENSE.txt and Licenses/THIRD_PARTY_NOTICES.txt terms for all head-derived components and plots"
-  },
   "monoLevelCalibration": {
     "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
     "referenceSampleRate": 44100.0,
@@ -79,5 +26,29 @@
     "headLevelTrimDb": 0.0,
     "leftGainDb": 0.663791,
     "rightGainDb": -0.663791
+  },
+  "stereoPairCorrection": {
+    "method": "Direct independent source-leg correction IRs; constant per-leg normalization only; no residual convolution.",
+    "headNumber": 1,
+    "inputLeftSha256": "6aed1f311e03b409a08d325a33ed5d6f9645e4c1a9a6471ed5a2cc53bd3b73f8",
+    "inputRightSha256": "9717ae1401ebc24a715561ca9728d3bab26c43867bb8be27f694c3aad6e78083"
+  },
+  "stereoPairOutputCalibration": {
+    "method": "Center Stereo Pair at width offset 0; independent equal-power pink input, 80-16000 Hz, native sample rate including fractional delay; source-leg balance equalizes output ear power; pair power reduced 1 dB from prior calibrated pair. Mono ear calibration unchanged.",
+    "beforeLeftMinusRightDb": 0.7057680095145097,
+    "afterLeftMinusRightDb": 0.0,
+    "levelChangeDb": -1
+  },
+  "currentStereoPairFiles": {
+    "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
+    "stereoPairLeftCorrectionSha256": "5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1",
+    "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
+    "stereoPairRightCorrectionSha256": "c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480",
+    "stereoPairCorrectionName": "IRCAM LISTEN 1050 Stereo Pair Tonal Restoration",
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
+    "stereoPairLeftGainDb": -2.157633,
+    "stereoPairRightGainDb": 2.157633,
+    "stereoPairTrimDb": -1.522492,
+    "stereoPairCalibrationMethod": "Center Stereo Pair at width offset 0; independent equal-power pink input, 80-16000 Hz, native sample rate including fractional delay; source-leg balance equalizes output ear power; pair power reduced 1 dB from prior calibrated pair. Mono ear calibration unchanged."
   }
 }

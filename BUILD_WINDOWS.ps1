@@ -9,7 +9,7 @@ $ClapExt = if ($env:CLAP_JUCE_EXTENSIONS_DIR) { $env:CLAP_JUCE_EXTENSIONS_DIR } 
 
 Start-Transcript -Path $Log -Force | Out-Null
 try {
-    Write-Host '=== SpaceTrace 1.0 RC6 WIP2b - VST3 + CLAP Validation ==='
+    Write-Host '=== SpaceTrace 1.0.1 - VST3 + CLAP Validation ==='
     Write-Host "Source: $Root"
 
     if (-not (Get-Command cmake -ErrorAction SilentlyContinue)) { throw 'CMake is required and was not found on PATH.' }

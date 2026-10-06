@@ -36,19 +36,7 @@ Stereo inputs are still averaged as (L+R)/2 in Mono Point Source. Independent
 equal-power channels lose 3.01 dB in that fold-down; opposite polarity cancels.
 Position and content can change output level. This is not an AGC or limiter.
 
-Heads 1, 3 and 4 now include an additional common Tone Trace residual in both
-Stereo Pair source-leg responses. It was measured with the previous corrections
-active at default Stereo Pair settings. The full offline convolution preserves
-the original correction plus the residual, without new normalization or gain
-calibration. Existing pair trim remains the baseline reference; final level may
-change with the residual. Heads 2 and 5 and all mono corrections are unchanged.
-See Correction_Models/StereoPair/README.txt for exact components and provenance,
-and Correction_Plots/StereoPair/ for actual combined response plots and text.
-
-Each combined response has a gentle half-cosine fade over its final 40 ms,
-ending at exact zero. The onset and preceding samples remain intact, and the
-measured magnitude change is below 0.001 dB over 20 Hz-20 kHz. The original
-component WAVs are preserved; the fade is applied only after composition.
+All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Mono calibration is unchanged. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
 
 The PNG files under Docs/Correction_Plots show the actual correction WAV response and
 retained Tone Trace model curves. Matching .txt files describe those curves from the

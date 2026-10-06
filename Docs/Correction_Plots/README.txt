@@ -14,17 +14,7 @@ For each head there are two useful views when the source model is retained:
 - *_ToneTrace_model.png: the original Tone Trace model curve.
 
 The files in this directory describe the global Mono Point Source correction.
-StereoPair/ contains separate left/right source-leg response plots for the updated
-Stereo Pair corrections on heads 1, 3 and 4, all using -18 to +30 dB so the full
-curves fit without clipping. Each is generated from the actual
-combined WAV: original correction convolved with the same common residual for
-both legs. Each PNG has a matching accessible text description. These curves
-exclude the separate source gains, ear gains, head trim and pair trim, all of
-which retain their previous values. The original models and exact composition
-inputs are retained in Docs/Correction_Models/StereoPair/.
-
-The combined WAV plots include their final 40 ms half-cosine tail fade to zero.
-This is a time-domain taper; no normalization or gain calibration was added.
+StereoPair/ contains the actual left/right WAV response plots for all five heads. These exclude the separate runtime gains recorded in the manifests. No old residual composition or tail fade is implied by these replacement IRs.
 
 The paired text description reports the strongest boost, deepest cut, and broad-band
 means. It intentionally does not claim anything about localization quality or

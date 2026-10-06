@@ -9,14 +9,14 @@
   "correctionName": "Tone Trace raw-HRTF global restoration",
   "correctionVersion": "tonetrace-raw-v1",
   "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-  "stereoPairLeftCorrectionSha256": "581bfd522edfd501467bf0f2d884a5661263bb6acf538ea497601a95d2341474",
+  "stereoPairLeftCorrectionSha256": "0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4",
   "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-  "stereoPairRightCorrectionSha256": "7f128e059a58986964d3865d2d4b0380e07428c9a4df83fda0dc777347c2ead4",
+  "stereoPairRightCorrectionSha256": "081a0d7777884111443d58a785b94854ccae5c0e3926628039a6a03e60392bb8",
   "stereoPairCorrectionName": "SADIE II D1 / Neumann KU100 Stereo Pair Tonal Restoration",
-  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-v3-tailfade-20261005",
+  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
   "stereoPairLeftGainDb": -0.012492,
   "stereoPairRightGainDb": 0.012492,
   "stereoPairTrimDb": -0.871453,
-  "stereoPairCalibrationMethod": "90/270 deg Raw source legs; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0; 2026-10-05: full offline convolution of both existing source-leg corrections with one common Tone Trace residual captured with Dataset Corrected Stereo Pair active at default settings and centered host pan; original source gains, ear gains, head trim and pair trim preserved; no residual normalization; final 40 ms half-cosine tail fade after composition; no normalization or gain recalibration",
+  "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
   "monoTrimDb": 4.339644
 }

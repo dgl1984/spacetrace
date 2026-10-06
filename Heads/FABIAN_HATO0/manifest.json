@@ -15,14 +15,14 @@
   "frontCenterImbalanceDb": -0.582146,
   "channelCalibrationMethod": "pink-weighted 80-16000 Hz at 0 deg azimuth / 0 deg elevation; equal-and-opposite gains",
   "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-  "stereoPairLeftCorrectionSha256": "7be64bc0acf1a1eec97be07b52543832d6dbb9cf71bff3bb8a8aff844bfcdf66",
+  "stereoPairLeftCorrectionSha256": "29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3",
   "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-  "stereoPairRightCorrectionSha256": "a94c45e93a5ac24a035f5dd46e44dc17b8f7363e25c03a282ab371cee7e7feae",
+  "stereoPairRightCorrectionSha256": "e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c",
   "stereoPairCorrectionName": "FABIAN HATO 0 Stereo Pair Tonal Restoration",
-  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-v2",
+  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
   "stereoPairLeftGainDb": -0.002023,
   "stereoPairRightGainDb": 0.002023,
   "stereoPairTrimDb": 0.024885,
-  "stereoPairCalibrationMethod": "90/270 deg Raw source legs; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
+  "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
   "monoTrimDb": 3.994053
 }

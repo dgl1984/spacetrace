@@ -68,23 +68,23 @@ float maxAbs(const juce::AudioBuffer<float>& b) {
 int main() {
     juce::ScopedJuceInitialiser_GUI juceInitialiser;
     try {
-        // Use the production minimum-phase rate converter on the full combined
+        // Use the production minimum-phase rate converter on the approved direct
         // WAVs. Compare physical-frequency response with the stored 48 kHz IRs.
         {
             const auto heads = juce::File(juce::SystemStats::getEnvironmentVariable("SPACETRACE_HEADS_DIR", ""));
             juce::AudioFormatManager formats;
             formats.registerBasicFormats();
             double worstDb = 0.0;
-            for (const auto* folder : {"IRCAM_1050", "KU100_SADIE_D1", "KU100_FULL2DEG"}) {
+            for (const auto* folder : {"IRCAM_1050", "MIT_KEMAR_Normal", "KU100_SADIE_D1", "KU100_FULL2DEG", "FABIAN_HATO0"}) {
                 for (const auto* side : {"left", "right"}) {
                     const auto file = heads.getChildFile(folder).getChildFile(
                         juce::String("stereo_pair_") + side + "_correction.wav");
                     std::unique_ptr<juce::AudioFormatReader> reader(formats.createReaderFor(file));
-                    require(reader != nullptr && reader->lengthInSamples == 17279,
-                            "combined Stereo Pair IR is missing or truncated");
+                    require(reader != nullptr && reader->lengthInSamples == 8640,
+                            "direct Stereo Pair IR is missing or truncated");
                     juce::AudioBuffer<float> buffer(1, static_cast<int>(reader->lengthInSamples));
                     require(reader->read(&buffer, 0, buffer.getNumSamples(), 0, true, false),
-                            "could not read combined Stereo Pair IR");
+                            "could not read direct Stereo Pair IR");
                     spacetrace::CompensationProfile original;
                     original.sampleRate = reader->sampleRate;
                     original.impulse.assign(buffer.getReadPointer(0), buffer.getReadPointer(0) + buffer.getNumSamples());
@@ -97,19 +97,19 @@ int main() {
                     };
                     for (const double rate : {44100.0, 48000.0, 88200.0, 96000.0}) {
                         const auto converted = spacetrace::resampleCompensation(original, rate);
-                        require(converted.impulse.size() >= static_cast<std::size_t>(0.359 * rate),
-                                "rate conversion truncated the combined correction tail");
+                        require(converted.impulse.size() >= static_cast<std::size_t>((original.impulse.size() - 1) * rate / original.sampleRate),
+                                "rate conversion truncated the direct correction tail");
                         for (int step = 0; step <= 48; ++step) {
                             const double hz = 20.0 * std::pow(1000.0, step / 48.0);
                             const double delta = std::abs(20.0 * std::log10(magnitude(converted, hz) / magnitude(original, hz)));
                             require(std::isfinite(delta) && delta < 0.05,
-                                    "combined correction response changed during host-rate conversion");
+                                    "direct correction response changed during host-rate conversion");
                             worstDb = std::max(worstDb, delta);
                         }
                     }
                 }
             }
-            std::cout << "Combined correction maximum rate-conversion deviation: " << worstDb << " dB\n";
+            std::cout << "Direct correction maximum rate-conversion deviation: " << worstDb << " dB\n";
         }
         // Stereo Pair geometry is shared by DSP and the read-only display.
         // Width Offset bows both source positions symmetrically around the
@@ -208,10 +208,10 @@ int main() {
                 "same-rate instances did not share immutable prepared head data");
         require(sharedA->hasCompensation, "IRCAM external correction is missing");
         require(sharedA->stereoPair.hasCompensation, "IRCAM Stereo Pair correction pair is missing");
-        require(std::abs(sharedA->stereoPair.leftGainDb - (-1.570725f)) < 0.01f &&
-                std::abs(sharedA->stereoPair.rightGainDb - 1.570725f) < 0.01f,
+        require(std::abs(sharedA->stereoPair.leftGainDb - (-2.157633f)) < 0.01f &&
+                std::abs(sharedA->stereoPair.rightGainDb - 2.157633f) < 0.01f,
                 "IRCAM Stereo Pair source-balance calibration changed unexpectedly");
-        require(std::abs(sharedA->stereoPair.trimDb - (-0.452849f)) < 0.01f,
+        require(std::abs(sharedA->stereoPair.trimDb - (-1.522492f)) < 0.01f,
                 "IRCAM Stereo Pair level calibration changed unexpectedly");
 
         auto kemar = HeadRepository::instance().prepare(BuiltInDatasetId::MitKemarNormalPinna, 48000.0, cacheError);

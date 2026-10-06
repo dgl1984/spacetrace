@@ -15,14 +15,14 @@
   "frontCenterImbalanceDb": -0.28199,
   "channelCalibrationMethod": "pink-weighted 80-16000 Hz at 0 deg azimuth / 0 deg elevation; equal-and-opposite gains",
   "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-  "stereoPairLeftCorrectionSha256": "b5a785b8f21767bffbc380d97f97b88bd178ea76e488ce5743579db172c92672",
+  "stereoPairLeftCorrectionSha256": "f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf",
   "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-  "stereoPairRightCorrectionSha256": "b82e9439b378c9c16d28b18db7d5648bc2c4935d639d9c0cb9817c219b6f5d53",
+  "stereoPairRightCorrectionSha256": "57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207",
   "stereoPairCorrectionName": "TH Köln KU100 FULL2DEG Stereo Pair Tonal Restoration",
-  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-v3-tailfade-20261005",
+  "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
   "stereoPairLeftGainDb": -0.069705,
   "stereoPairRightGainDb": 0.069705,
   "stereoPairTrimDb": -0.481257,
-  "stereoPairCalibrationMethod": "90/270 deg Raw source legs; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0; 2026-10-05: full offline convolution of both existing source-leg corrections with one common Tone Trace residual captured with Dataset Corrected Stereo Pair active at default settings and centered host pan; original source gains, ear gains, head trim and pair trim preserved; no residual normalization; final 40 ms half-cosine tail fade after composition; no normalization or gain recalibration",
+  "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
   "monoTrimDb": 4.573633
 }

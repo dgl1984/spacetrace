@@ -16,59 +16,6 @@
     "sampleStorage": "float32 runtime representation"
   },
   "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
-  "stereoPairResidualComposition": {
-    "date": "2026-10-05",
-    "componentsDirectory": "Docs/Correction_Models/StereoPair/Components/KU100_SADIE_D1",
-    "componentSha256": {
-      "residual.wav": "a443b97cece5df1c482be70b92a43c3452b5c0da52d7fd1819d394642d172839",
-      "residual.ttm": "45a8411c03b4e3a3eafd9bb07d827ea219dd4cfd81f3f55957f233fb97354639",
-      "base_left.wav": "afc82163c0c1c978f905e8077c3ebb8510207ac8b0024f962480c0a82c7fd2f4",
-      "base_right.wav": "0f727e62e20d1581e640b04f213961d01fe511345c07dafe2f2994f51aa91f9f"
-    },
-    "preservedGainFields": {
-      "levelTrimDb": null,
-      "leftGainDb": null,
-      "rightGainDb": null,
-      "stereoPairLeftGainDb": -0.012492,
-      "stereoPairRightGainDb": 0.012492,
-      "stereoPairTrimDb": -0.871453
-    },
-    "capture": "Dataset Corrected, Stereo Pair, selected head, otherwise default settings; host pan centered",
-    "method": "Convolve each preserved base source-leg correction with the common residual, then apply a half-cosine fade over the final 40 ms",
-    "gainPolicy": "No normalization or gain makeup; existing source/ear balance and fixed trims preserved; tiny response change from final tail taper quantified in results",
-    "runtime": "Existing source-leg convolutions only; active at all Stereo Pair positions in Dataset Corrected mode",
-    "head1OutputBalance": "Separate pending calibration; not included in this EQ composition",
-    "reproduce": "python scripts/compose_corrections.py <components>/base_left.wav <components>/residual.wav Heads/<head>/stereo_pair_left_correction.wav --tail-fade-ms 40 --overwrite (repeat with right)",
-    "results": {
-      "left": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 1.0459689781797877e-05
-      },
-      "right": {
-        "sampleRate": 48000,
-        "baseTaps": 8640,
-        "residualTaps": 8640,
-        "outputTaps": 17279,
-        "durationSeconds": 0.3599791666666667,
-        "normalizationDb": 0.0,
-        "tailFadeMs": 40,
-        "tailFadeSamples": 1920,
-        "tailFadeShape": "half cosine",
-        "method": "full linear convolution; optional final tail taper; float64 calculation, float32 WAV",
-        "maxMagnitudeChange20HzTo20kHzDb": 1.2417240820286184e-05
-      }
-    },
-    "license": "Retain the corresponding head LICENSE.txt and Licenses/THIRD_PARTY_NOTICES.txt terms for all head-derived components and plots"
-  },
   "monoLevelCalibration": {
     "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
     "referenceSampleRate": 44100.0,
@@ -79,5 +26,23 @@
     "headLevelTrimDb": 0,
     "leftGainDb": 0,
     "rightGainDb": 0
+  },
+  "stereoPairCorrection": {
+    "method": "Direct independent source-leg correction IRs; constant per-leg normalization only; no residual convolution.",
+    "headNumber": 3,
+    "inputLeftSha256": "37420d22640e0f9a3b42ae5a00d6639c47271a7f46c978be6649d11ee54a9020",
+    "inputRightSha256": "f0b6094baa7ed223b0b5ec51fcf8b1b1adccb44968b958b4d74fe0534234c780"
+  },
+  "currentStereoPairFiles": {
+    "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
+    "stereoPairLeftCorrectionSha256": "0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4",
+    "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
+    "stereoPairRightCorrectionSha256": "081a0d7777884111443d58a785b94854ccae5c0e3926628039a6a03e60392bb8",
+    "stereoPairCorrectionName": "SADIE II D1 / Neumann KU100 Stereo Pair Tonal Restoration",
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
+    "stereoPairLeftGainDb": -0.012492,
+    "stereoPairRightGainDb": 0.012492,
+    "stereoPairTrimDb": -0.871453,
+    "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0"
   }
 }

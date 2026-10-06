@@ -26,5 +26,17 @@
     "headLevelTrimDb": 0.0,
     "leftGainDb": -0.0,
     "rightGainDb": 0.0
+  },
+  "currentStereoPairFiles": {
+    "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
+    "stereoPairLeftCorrectionSha256": "85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564",
+    "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
+    "stereoPairRightCorrectionSha256": "24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df",
+    "stereoPairCorrectionName": "MIT KEMAR Normal Pinna Stereo Pair Tonal Restoration",
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-v3",
+    "stereoPairLeftGainDb": 0.0,
+    "stereoPairRightGainDb": -0.0,
+    "stereoPairTrimDb": -4.373117,
+    "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0"
   }
 }

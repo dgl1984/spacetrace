@@ -36,3 +36,14 @@ Thumbs.db
 
 # Prepared source/release archives
 /exports/
+
+# Local development records
+*AUDIT*
+*HANDOFF*
+*INTERNAL_REPORT*
+*WIP*
+*GITHUB_PR*
+*LICENSING_DECISION*
+/verification-*/
+/scratch/
+/release-ready/

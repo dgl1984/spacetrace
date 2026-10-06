@@ -1,4 +1,4 @@
-"""Check cascade equivalence, input preservation, and the shipped residual recipes."""
+"""Check cascade equivalence, input preservation, and the approved direct correction pairs."""
 from pathlib import Path
 import hashlib
 import json
@@ -71,43 +71,26 @@ class CompositionTests(unittest.TestCase):
                     compose(d / "base.wav", d / "extra.wav", d / "bad.wav", tail_fade_ms=fade)
                 self.assertFalse((d / "bad.wav").exists())
 
-    def test_shipped_components_hashes_gains_and_complex_response(self):
-        for folder in ("IRCAM_1050", "KU100_SADIE_D1", "KU100_FULL2DEG"):
+    def test_approved_direct_pairs_in_plugin_order(self):
+        # Freeze the listening-approved release assets by head identity. This
+        # catches swapping valid correction files between head packages.
+        approved = {'IRCAM_1050': ['5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1', 'c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480'], 'MIT_KEMAR_Normal': ['85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564', '24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df'], 'KU100_SADIE_D1': ['0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4', '081a0d7777884111443d58a785b94854ccae5c0e3926628039a6a03e60392bb8'], 'KU100_FULL2DEG': ['f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf', '57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207'], 'FABIAN_HATO0': ['29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3', 'e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c']}
+        for folder, digests in approved.items():
             head = ROOT / "Heads" / folder
-            manifest = json.loads((head / "manifest.json").read_text(encoding="utf-8-sig"))
-            provenance = json.loads((head / "provenance.json").read_text(encoding="utf-8-sig"))
-            recipe = provenance["stereoPairResidualComposition"]
-            for key, value in recipe["preservedGainFields"].items():
-                self.assertEqual(manifest.get(key), value, (folder, key))
-            components = ROOT / recipe["componentsDirectory"]
-            for name, digest in recipe["componentSha256"].items():
-                self.assertEqual(hashlib.sha256((components / name).read_bytes()).hexdigest(), digest)
-            rate, extra = read_wav(components / "residual.wav")
-            n = 65536
-            for side in ("left", "right"):
-                sr, base = read_wav(components / ("base_" + side + ".wav"))
-                out = head / manifest["stereoPair" + side.title() + "CorrectionFile"]
-                final_sr, final = read_wav(out)
-                self.assertEqual((sr, final_sr), (rate, rate))
-                self.assertEqual(len(final), len(base) + len(extra) - 1)
-                self.assertTrue(np.isfinite(final).all())
-                cascade = np.fft.rfft(base, n) * np.fft.rfft(extra, n)
-                untapered = np.fft.irfft(cascade, n)[:len(final)]
-                fade = recipe["results"][side]["tailFadeSamples"]
-                self.assertEqual(fade, round(rate * .040))
-                expected_samples = untapered.copy()
-                expected_samples[-fade:] *= .5 * (1 + np.cos(np.linspace(0, np.pi, fade)))
-                np.testing.assert_allclose(final, expected_samples, rtol=1e-4, atol=2e-7)
-                self.assertEqual(final[-1], 0.0)
-                expected = np.fft.rfft(expected_samples, n)
-                actual = np.fft.rfft(final, n)
-                np.testing.assert_allclose(actual, expected, rtol=1e-4, atol=2e-6)
-                frequencies = np.fft.rfftfreq(n, 1 / rate)
-                band = (frequencies >= 20) & (frequencies <= 20000)
-                delta = 20 * np.log10(np.abs(actual[band]) / np.abs(cascade[band]))
-                self.assertLess(np.max(np.abs(delta)), .001)
-                key = "stereoPair" + side.title() + "CorrectionSha256"
-                self.assertEqual(hashlib.sha256(out.read_bytes()).hexdigest(), manifest[key])
+            manifest = json.loads((head / "manifest.json").read_text(encoding="utf-8"))
+            provenance = json.loads((head / "provenance.json").read_text(encoding="utf-8"))
+            self.assertNotIn("stereoPairResidualComposition", provenance)
+            for side, digest in zip(("Left", "Right"), digests):
+                key = "stereoPair" + side + "Correction"
+                output = head / manifest[key + "File"]
+                self.assertEqual(hashlib.sha256(output.read_bytes()).hexdigest(), digest, folder)
+                self.assertEqual(manifest[key + "Sha256"], digest)
+                rate, samples = read_wav(output)
+                self.assertEqual(rate, 48000)
+                self.assertEqual(len(samples), 8640)
+                self.assertTrue(np.isfinite(samples).all())
+            for key, value in provenance["currentStereoPairFiles"].items():
+                self.assertEqual(manifest[key], value)
 
 
 if __name__ == "__main__":

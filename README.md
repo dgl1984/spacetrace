@@ -1,8 +1,8 @@
-# SpaceTrace 1.0 — Five-Head Spatializer, VST3 + CLAP
+# SpaceTrace 1.0.1 — Five-Head Spatializer, VST3 + CLAP
 
 SpaceTrace is a binaural HRTF spatializer built to keep spatial audio practical whether you work with a mouse, keyboard, screen reader, host automation, or the host's generic parameter view.
 
-The 1.0 release candidate ships five heads:
+SpaceTrace 1.0.1 ships five heads:
 
 1. IRCAM LISTEN 1050
 2. MIT KEMAR Normal Pinna
@@ -10,7 +10,7 @@ The 1.0 release candidate ships five heads:
 4. TH Köln / Bernschütz FULL2DEG KU100
 5. FABIAN HATO 0
 
-The global corrected heads are normalized to reduce broad EQ and loudness differences when switching heads. Stereo Pair heads 1, 3 and 4 also include common Tone Trace residual refinements, combined with their existing left/right source responses. Those refinements retain their original gain and the previous calibration trims; no new loudness normalization is applied. See `Docs/Correction_Models/StereoPair/README.txt` for the exact composition and `Docs/Correction_Plots/StereoPair/` for the final responses and text descriptions.
+Stereo Pair uses separate direct left/right correction IRs for all five heads. Head numbers follow the plug-in menu: 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Current correction response plots and calibration metadata accompany the head packages.
 
 ## Start here
 

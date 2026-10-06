@@ -60,7 +60,7 @@ def main():
     visual_snapshots=read('tests/visual_snapshots.cpp') if (ROOT/'tests/visual_snapshots.cpp').exists() else ''
     visual_ps=read('BUILD_VISUAL_SNAPSHOTS.ps1') if (ROOT/'BUILD_VISUAL_SNAPSHOTS.ps1').exists() else ''
 
-    require(cmake,'project(SpaceTrace VERSION 1.0.0','1.0 RC project identity missing')
+    require(cmake,'project(SpaceTrace VERSION 1.0.1','1.0.1 project identity missing')
     require(cmake,'PRODUCT_NAME "SpaceTrace"','SpaceTrace product identity missing')
     require(cmake,'FORMATS VST3 Standalone','VST3/Standalone JUCE target missing')
     require(cmake,'clap_juce_extensions_plugin(TARGET SpaceTrace','CLAP wrapper must target the same SpaceTrace JUCE target')
@@ -457,7 +457,7 @@ def main():
     require(editor, 'setResizeLimits(820, 648, 1280, 920)',
             'Minimum editor height must preserve Bypass/Status with exact-entry error visible')
 
-    print('PASS: SpaceTrace 1.0 RC6 WIP2b stereo-pair-width source contract')
+    print('PASS: SpaceTrace 1.0.1 stereo-pair-width source contract')
     return 0
 
 if __name__=='__main__':
