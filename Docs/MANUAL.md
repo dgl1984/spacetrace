@@ -70,7 +70,7 @@ The spatial display mirrors this geometry: Mono Point Source shows one source ma
 
 Stereo Pair remains a linear sum and has no limiter, AGC, or content-dependent normalization. Shipping heads can include optional **90°/270° Stereo Pair correction assets** plus fixed source-balance and pair-level calibration measured with pink noise at the centered 0° pair geometry. Those corrections are applied independently to the two binaural source legs before summing and identically to both ears within each leg, preserving the leg's interaural level/timing relationship. The fixed calibration makes ordinary stereo material much closer to the original tonal balance and reference level without turning SpaceTrace into a loudness processor. The shipping 90°/270° correction and level calibration are exact at **Width Offset 0°**. Moving Width Offset away from zero deliberately trades some tonal calibration accuracy for placement flexibility; SpaceTrace does not pretend to carry a different correction for every angle.
 
-All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Mono calibration is unchanged. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
+All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
 
 Those three heads' combined Stereo Pair responses have a smooth half-cosine fade over their final 40 ms, reaching zero without gain makeup. The measured magnitude change from the fade is below 0.001 dB over 20 Hz-20 kHz. The fade is included in the final response plots.
 
@@ -439,7 +439,7 @@ SpaceTrace/
     scripts/
 ```
 
-`Docs/` contains user/reproducibility documentation and correction documentation. `scripts/` contains only the custom-head tools that users may actually need. Build scripts, source code, WIP handoffs, internal audits, release-checkpoint reports and dependency trees are not part of the public portable package.
+`Docs/` contains the manual, custom-head guide, and correction documentation. `scripts/` contains the tools for preparing and checking custom heads.
 
 The plug-in searches for `Heads/` relative to the portable layout (with a documented test/development override). If you separate the binaries from the resource folder, you can break head discovery. The release folder kept together is the reference installation.
 

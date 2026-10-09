@@ -51,7 +51,7 @@ The revisions are written into `deps/clap-juce-extensions/SPACETRACE_PINNED_REVI
 
 ## Release gates
 
-Before 1.0 RC, test at minimum:
+Before publishing a release, test at minimum:
 
 - VST3 and CLAP instantiate in REAPER;
 - both expose the same controls and state;
@@ -85,4 +85,15 @@ The Windows build reuses `build-windows/`, including compiled JUCE objects. It d
 
 ## Licensing release gate
 
-The source package carries SpaceTrace's selected first-party licence and separate third-party notices. Before publishing binary VST3/CLAP builds under the selected non-AGPL SpaceTrace model, confirm the JUCE 8 licensing route that permits the intended distribution. See `LICENSING_DECISION_1.0_RC2.md` and `../Licenses/JUCE_NOTICE.txt`.
+The repository carries SpaceTrace's first-party licence and separate third-party notices. For the JUCE dependency's licensing requirements, see [the JUCE notice](../Licenses/JUCE_NOTICE.txt).
+
+## Publication checks
+
+Run `python scripts/check_public_source.py` before pushing source, and run
+`python tests/test_release_staging.py` before publishing a Windows package.
+Review new documentation for private discussion or development notes; automated
+checks catch known filenames and handoff headings but cannot replace that review.
+
+Release assets consist of the Windows package and its `SHA256SUMS.txt` file.
+Source is available from the repository; do not upload a second source ZIP.
+The release tag must identify the source and head assets used for that release.

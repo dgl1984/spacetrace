@@ -56,7 +56,18 @@ FORBIDDEN_PUBLIC_NAME_FRAGMENTS = (
     "INTERNAL_REPORT",
     "WINDOWS_FIRST_TEST",
     "MOVEMENT_SWEEP_REPORT",
+    "LICENSING_DECISION",
+    "GITHUB_PACKAGE",
 )
+
+PRIVATE_FILE_NAMES = {"agents.md", "claude.md", "gemini.md", "conversation.json", "transcript.json"}
+PRIVATE_DIR_NAMES = {".codex", ".agents", ".claude", "graphify-out", ".git", "__pycache__"}
+
+
+def is_private_path(path: Path) -> bool:
+    return any(part.casefold() in PRIVATE_DIR_NAMES or part.casefold() in PRIVATE_FILE_NAMES
+               or any(fragment in part.upper() for fragment in FORBIDDEN_PUBLIC_NAME_FRAGMENTS)
+               for part in path.parts)
 
 
 def die(message: str) -> "NoReturn":
@@ -81,8 +92,7 @@ def validate_public_tree(root: Path) -> None:
         die(f"public root mismatch; missing={missing}, extra={extra}")
 
     for p in root.rglob("*"):
-        upper = p.name.upper()
-        if any(fragment in upper for fragment in FORBIDDEN_PUBLIC_NAME_FRAGMENTS):
+        if is_private_path(p.relative_to(root)):
             die(f"internal/development artifact leaked into public package: {p.relative_to(root)}")
 
     docs = root / "Docs"

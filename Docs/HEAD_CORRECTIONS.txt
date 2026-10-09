@@ -24,8 +24,8 @@ Mono reference calibration
 At front-center (0 degrees azimuth/elevation), 1 metre, Dataset Corrected and
 0 dB Output, the average ear power matches a unit mono source using 80-16000 Hz
 pink weighting at the head's native rate, including the renderer's fractional
-delay response. Fixed monoTrimDb values are +5.368667 dB IRCAM, +4.673739 dB
-KEMAR, +4.339644 dB SADIE, +4.573633 dB FULL2DEG, and +3.994053 dB FABIAN.
+delay response. Fixed monoTrimDb values are +5.412314 dB IRCAM, +4.679174 dB
+KEMAR, +4.333414 dB SADIE, +4.573633 dB FULL2DEG, and +3.994053 dB FABIAN.
 This gain applies once, only to Modern Mono Point Source, including Raw and
 Custom Correction so changing Tone retains its original relative gain.
 It does not change correction WAVs, ear balance, Stereo Pair, or Papa Pan.
@@ -36,7 +36,7 @@ Stereo inputs are still averaged as (L+R)/2 in Mono Point Source. Independent
 equal-power channels lose 3.01 dB in that fold-down; opposite polarity cancels.
 Position and content can change output level. This is not an AGC or limiter.
 
-All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Mono calibration is unchanged. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
+All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
 
 The PNG files under Docs/Correction_Plots show the actual correction WAV response and
 retained Tone Trace model curves. Matching .txt files describe those curves from the

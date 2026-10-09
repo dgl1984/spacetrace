@@ -8,4 +8,4 @@
 - Recalibrated the corresponding mono output trims so corrected front-center output remains level-matched across the included heads.
 - Updated correction-response plots and accompanying documentation.
 
-Available as Windows x64 VST3 and CLAP. Existing parameter IDs and saved-state format are unchanged.
+Available as Windows x64 VST3 and CLAP.

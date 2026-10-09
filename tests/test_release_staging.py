@@ -26,6 +26,24 @@ with tempfile.TemporaryDirectory(prefix="spacetrace-release-test-") as td:
         assert (head / "provenance.json").is_file()
         assert (head / "LICENSE.txt").is_file()
 
+    # Reject private records inside otherwise allowed documentation folders.
+    for relative in ("Docs/Correction_Plots/AGENTS.md",
+                     "Docs/Correction_Models/LICENSING_DECISION.md",
+                     "Docs/Correction_Plots/.codex/session.json"):
+        leaked = out / relative
+        leaked.parent.mkdir(parents=True, exist_ok=True)
+        leaked.write_text("private development note", encoding="utf-8")
+        try:
+            MOD.validate_public_tree(out)
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError(f"private record accepted: {relative}")
+        leaked.unlink()
+        if leaked.parent.name == ".codex":
+            leaked.parent.rmdir()
+    MOD.validate_public_tree(out)
+
 # Path-safety regression checks for the Windows portable staging location.
 with tempfile.TemporaryDirectory(prefix="spacetrace-release-path-test-") as td:
     td = Path(td)

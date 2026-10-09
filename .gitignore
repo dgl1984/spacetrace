@@ -47,3 +47,12 @@ Thumbs.db
 /verification-*/
 /scratch/
 /release-ready/
+/WINDOWS_FIRST_TEST.md
+/MOVEMENT_SWEEP_REPORT.md
+/GITHUB_PACKAGE.md
+.codex/
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+GEMINI.md

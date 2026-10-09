@@ -56,7 +56,7 @@ SpaceTrace/
     scripts/
 ```
 
-Internal audits, development handoffs, source code, build scripts, dependency trees and RC engineering reports are not staged into this public folder.
+Keep the accompanying folders with the plug-ins when installing or updating SpaceTrace. The `Heads/` folder contains the sound corrections as well as the head models.
 
 ## Custom heads
 
