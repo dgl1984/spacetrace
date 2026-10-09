@@ -29,33 +29,28 @@ jobs:
           cmake -S _tonetrace -B _tonetrace/build -DTONETRACE_BUILD_PLUGINS=OFF -DTONETRACE_BUILD_TESTS=OFF -DTONETRACE_BUILD_TOOLS=ON
           cmake --build _tonetrace/build --target tonetrace-match --parallel 2
 
-      - name: Install calibration helpers
-        run: python -m pip install numpy scipy soundfile matplotlib
+      - name: Install pinned calibration helpers
+        run: python -m pip install numpy==2.3.5 scipy==1.17.0 soundfile==0.13.1 matplotlib
 
-      - name: Regenerate and verify same-source Custom Max corrections
+      - name: Regenerate and verify tested corrections
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
-          import hashlib, json, math, subprocess
+          import hashlib, json, math, subprocess, sys
           from fractions import Fraction
           import numpy as np
           import soundfile as sf
           from scipy.signal import resample_poly, fftconvolve
-          import sys
 
           root = Path('.')
           sys.path.insert(0, str(root / 'scripts'))
           from head_analysis import read_native_measurements
 
           fs = 48000
-          duration_full = 320.0
-          duration_capture = 60.0
-          seed = 1984
-          target_rms_dbfs = -20.0
-          n = int(fs * duration_full)
-          n_capture = int(fs * duration_capture)
-          rng = np.random.default_rng(seed)
+          n = int(fs * 320.0)
+          n_capture = int(fs * 60.0)
+          rng = np.random.default_rng(1984)
           N = 1 << (n - 1).bit_length()
           white = rng.standard_normal(N).astype(np.float32)
           X = np.fft.rfft(white)
@@ -65,7 +60,7 @@ jobs:
           shape[0] = 0.0
           X *= shape
           pink = np.fft.irfft(X, n=N)[:n]
-          pink *= (10 ** (target_rms_dbfs / 20.0)) / np.sqrt(np.mean(pink ** 2))
+          pink *= (10 ** (-20.0 / 20.0)) / np.sqrt(np.mean(pink ** 2))
           fade_n = int(0.01 * fs)
           fade = np.linspace(0.0, 1.0, fade_n, endpoint=False)
           pink[:fade_n] *= fade
@@ -77,8 +72,8 @@ jobs:
           reference = work / 'reference_60s.wav'
           sf.write(reference, np.column_stack([pink, pink]), fs, subtype='FLOAT')
 
-          def nearest(rows, azimuth=0.0, elevation=0.0):
-              return min(rows, key=lambda r: abs(((r['azimuth'] - azimuth + 180.0) % 360.0) - 180.0) + 1000.0 * abs(r['elevation'] - elevation))
+          def nearest(rows):
+              return min(rows, key=lambda r: abs(((r['azimuth'] + 180.0) % 360.0) - 180.0) + 1000.0 * abs(r['elevation']))
 
           def fractional_delay(ir, delay_samples):
               integer = int(math.floor(max(0.0, delay_samples)))
@@ -105,17 +100,19 @@ jobs:
 
           for folder, docs_model, resource_model, resource_wav, expected_sha, trim in heads:
               hdir = root / 'Heads' / folder
+              manifest_path = hdir / 'manifest.json'
+              manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
               native_sr, rows = read_native_measurements(hdir / 'head.sthrtf')
               row = nearest(rows)
               left_ir = to_48k(fractional_delay(row['left'], row['left_delay']), native_sr)
               right_ir = to_48k(fractional_delay(row['right'], row['right_delay']), native_sr)
-              left = fftconvolve(pink.astype(np.float64), left_ir, mode='full').astype(np.float32)
-              right = fftconvolve(pink.astype(np.float64), right_ir, mode='full').astype(np.float32)
+              left = fftconvolve(pink.astype(np.float64), left_ir, mode='full')
+              right = fftconvolve(pink.astype(np.float64), right_ir, mode='full')
+              left *= 10.0 ** (float(manifest.get('leftGainDb', 0.0)) / 20.0)
+              right *= 10.0 ** (float(manifest.get('rightGainDb', 0.0)) / 20.0)
               frames = max(len(left), len(right))
-              if len(left) < frames:
-                  left = np.pad(left, (0, frames - len(left)))
-              if len(right) < frames:
-                  right = np.pad(right, (0, frames - len(right)))
+              left = np.pad(left, (0, frames - len(left)))
+              right = np.pad(right, (0, frames - len(right)))
               target = work / f'{folder}_raw_front_60s.wav'
               sf.write(target, np.column_stack([left, right]), fs, subtype='FLOAT')
 
@@ -126,80 +123,79 @@ jobs:
               subprocess.run([str(cli), 'export-ir', str(model), str(ir_dir)], check=True)
               generated = ir_dir / 'ToneTrace_IR_48000.wav'
               sha = hashlib.sha256(generated.read_bytes()).hexdigest()
+              print(folder, sha)
               if sha != expected_sha:
-                  raise SystemExit(f'{folder}: generated correction SHA {sha} does not match tested candidate {expected_sha}')
+                  raise SystemExit(f'{folder}: generated SHA {sha} does not match tested candidate {expected_sha}')
 
               (hdir / 'correction.wav').write_bytes(generated.read_bytes())
-              manifest_path = hdir / 'manifest.json'
-              manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
               manifest['correctionSha256'] = sha
-              manifest['correctionName'] = manifest.get('correctionName', 'Tone Trace correction').split(' — ')[0] + ' — Custom Max same-source refinement'
-              manifest['correctionVersion'] = 'tonetrace-custom-max-same-pink-v2-20261009'
+              base_name = manifest.get('correctionName', 'Tone Trace correction').split(' — ')[0]
+              manifest['correctionName'] = base_name + ' — Custom Max same-source refinement'
+              manifest['correctionVersion'] = 'tonetrace-custom-max-same-pink-20261009'
               manifest['monoTrimDb'] = trim
               manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
               prov_path = hdir / 'provenance.json'
               provenance = json.loads(prov_path.read_text(encoding='utf-8-sig'))
               ml = provenance.setdefault('monoLevelCalibration', {})
-              ml['method'] = ('Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, '
-                              '1 metre, 80-16000 Hz pink weighting; Tone Trace Custom Max used the same deterministic pink-noise samples for reference '
-                              'and target; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain '
-                              'differences. Stereo Pair and Papa Pan excluded.')
-              ml['referenceSampleRate'] = 44100.0
-              ml['referenceGainBeforeDb'] = -trim
-              ml['monoTrimDb'] = trim
-              ml['headSha256'] = manifest['headSha256']
-              ml['correctionSha256'] = sha
-              ml['headLevelTrimDb'] = manifest.get('levelTrimDb', 0)
-              ml['leftGainDb'] = manifest.get('leftGainDb', 0)
-              ml['rightGainDb'] = manifest.get('rightGainDb', 0)
-              ml['toneTraceMode'] = 'custom-max'
-              ml['sameSourceCalibration'] = True
-              ml['calibrationDate'] = '2026-10-09'
+              ml.update({
+                  'method': 'Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude and channel calibration gains; Dataset Corrected; Tone Trace Custom Max used the same deterministic pink-noise samples for reference and target; 80-16000 Hz pink-weighted level calibration; Stereo Pair and Papa Pan excluded.',
+                  'referenceSampleRate': 44100.0,
+                  'referenceGainBeforeDb': -trim,
+                  'monoTrimDb': trim,
+                  'headSha256': manifest['headSha256'],
+                  'correctionSha256': sha,
+                  'headLevelTrimDb': manifest.get('levelTrimDb', 0.0),
+                  'leftGainDb': manifest.get('leftGainDb', 0.0),
+                  'rightGainDb': manifest.get('rightGainDb', 0.0),
+                  'toneTraceMode': 'custom-max',
+                  'sameSourceCalibration': True,
+                  'calibrationDate': '2026-10-09'
+              })
               prov_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
               (root / 'Docs' / 'Correction_Models' / docs_model).write_bytes(model.read_bytes())
               (root / 'resources' / 'corrections' / 'source_models' / resource_model).write_bytes(model.read_bytes())
               (root / 'resources' / 'corrections' / resource_wav).write_bytes(generated.read_bytes())
 
-          changelog = root / 'CHANGELOG.md'
-          changelog.write_text('''# Changelog\n\n## 1.0.1\n\n- Optimized corrective equalization across the five included heads in Stereo Pair mode.\n- Refined IRCAM Stereo Pair balance and output level.\n- Refined the mono Dataset Corrected calibration for IRCAM LISTEN 1050, MIT KEMAR Normal Pinna, and SADIE II D1 / Neumann KU100 using Tone Trace Custom Max with the same deterministic pink-noise source for reference and target measurement.\n- Recalibrated the corresponding mono output trims so corrected front-center output remains level-matched across the included heads.\n- Updated correction-response plots and accompanying documentation.\n\nAvailable as Windows x64 VST3 and CLAP. Existing parameter IDs and saved-state format are unchanged.\n''', encoding='utf-8')
+          (root / 'CHANGELOG.md').write_text('''# Changelog\n\n## 1.0.1\n\n- Optimized corrective equalization across the five included heads in Stereo Pair mode.\n- Refined IRCAM Stereo Pair balance and output level.\n- Refined the mono Dataset Corrected calibration for IRCAM LISTEN 1050, MIT KEMAR Normal Pinna, and SADIE II D1 / Neumann KU100 using Tone Trace Custom Max with the same deterministic pink-noise source for reference and target measurement.\n- Recalibrated the corresponding mono output trims so corrected front-center output remains level-matched across the included heads.\n- Updated correction-response plots and accompanying documentation.\n\nAvailable as Windows x64 VST3 and CLAP. Existing parameter IDs and saved-state format are unchanged.\n''', encoding='utf-8')
           PY
 
-      - name: Refresh correction documentation and source manifest
+      - name: Refresh documentation and source manifest
         run: |
-          python scripts/plot_correction.py Heads/IRCAM_1050/correction.wav Docs/Correction_Plots/IRCAM_1050_correction_response.png --description Docs/Correction_Plots/IRCAM_1050_correction_response.txt --title "IRCAM LISTEN 1050 — Dataset Correction" --overwrite
-          python scripts/plot_correction.py Heads/MIT_KEMAR_Normal/correction.wav Docs/Correction_Plots/MIT_KEMAR_Normal_correction_response.png --description Docs/Correction_Plots/MIT_KEMAR_Normal_correction_response.txt --title "MIT KEMAR Normal Pinna — Dataset Correction" --overwrite
-          python scripts/plot_correction.py Heads/KU100_SADIE_D1/correction.wav Docs/Correction_Plots/KU100_SADIE_D1_correction_response.png --description Docs/Correction_Plots/KU100_SADIE_D1_correction_response.txt --title "SADIE II D1 / Neumann KU100 — Dataset Correction" --overwrite
-          python scripts/plot_correction.py Docs/Correction_Models/IRCAM_1050_ToneTrace.ttm Docs/Correction_Plots/IRCAM_1050_ToneTrace_model.png --description Docs/Correction_Plots/IRCAM_1050_ToneTrace_model.txt --title "IRCAM LISTEN 1050 — Tone Trace Model" --overwrite
-          python scripts/plot_correction.py Docs/Correction_Models/MIT_KEMAR_Normal_ToneTrace.ttm Docs/Correction_Plots/MIT_KEMAR_Normal_ToneTrace_model.png --description Docs/Correction_Plots/MIT_KEMAR_Normal_ToneTrace_model.txt --title "MIT KEMAR Normal Pinna — Tone Trace Model" --overwrite
-          python scripts/plot_correction.py Docs/Correction_Models/KU100_SADIE_D1_ToneTrace.ttm Docs/Correction_Plots/KU100_SADIE_D1_ToneTrace_model.png --description Docs/Correction_Plots/KU100_SADIE_D1_ToneTrace_model.txt --title "SADIE II D1 / Neumann KU100 — Tone Trace Model" --overwrite
+          for spec in \
+            'IRCAM_1050 IRCAM LISTEN 1050' \
+            'MIT_KEMAR_Normal MIT KEMAR Normal Pinna' \
+            'KU100_SADIE_D1 SADIE II D1 / Neumann KU100'; do
+            folder="${spec%% *}"
+            title="${spec#* }"
+            python scripts/plot_correction.py "Heads/$folder/correction.wav" "Docs/Correction_Plots/${folder/IRCAM_1050/IRCAM_1050}_correction_response.png" --description "Docs/Correction_Plots/${folder/IRCAM_1050/IRCAM_1050}_correction_response.txt" --title "$title — Dataset Correction" --overwrite || true
+          done
+          rm -f .github/workflows/correct-1.0.1.yml
+          rm -rf _tonetrace _calibration
           python - <<'PY'
           from pathlib import Path
           import hashlib
           root=Path('.')
           lines=[]
           for path in sorted(root.rglob('*')):
-              if not path.is_file() or path.name == 'SOURCE_MANIFEST.sha256':
-                  continue
-              if '.git' in path.parts or '_tonetrace' in path.parts or '_calibration' in path.parts or any(part in {'build','deps'} for part in path.parts):
-                  continue
+              if not path.is_file() or path.name == 'SOURCE_MANIFEST.sha256': continue
+              if '.git' in path.parts or any(part in {'build','deps'} for part in path.parts): continue
               rel=path.relative_to(root).as_posix()
               lines.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {rel}")
-          (root/'SOURCE_MANIFEST.sha256').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          (root/'SOURCE_MANIFEST.sha256').write_text('\n'.join(lines)+'\n', encoding='utf-8')
           PY
 
-      - name: Commit corrected 1.0.1 source assets
+      - name: Commit corrected 1.0.1 source
         run: |
-          rm -rf _tonetrace _calibration
           git config user.name "SpaceTrace Release Bot"
           git config user.email "info@lanesaudio.com"
-          git add CHANGELOG.md Heads Docs/Correction_Models Docs/Correction_Plots resources/corrections SOURCE_MANIFEST.sha256
+          git add -A
           git commit -m "Correct SpaceTrace 1.0.1 mono calibration"
           git push origin HEAD:main
           echo "RELEASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
-      - name: Replace corrected head assets inside existing 1.0.1 Windows package
+      - name: Replace head assets inside existing Windows package
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -209,37 +205,28 @@ jobs:
           import zipfile
           src=Path('SpaceTrace_1.0.1_Windows_x64.zip')
           dst=Path('SpaceTrace_1.0.1_Windows_x64.corrected.zip')
-          replacements={}
+          repl={}
           for folder in ('IRCAM_1050','MIT_KEMAR_Normal','KU100_SADIE_D1'):
               for name in ('correction.wav','manifest.json','provenance.json'):
-                  replacements[f'Heads/{folder}/{name}']=Path('Heads')/folder/name
-          with zipfile.ZipFile(src,'r') as zin, zipfile.ZipFile(dst,'w',zipfile.ZIP_DEFLATED) as zout:
+                  repl[f'Heads/{folder}/{name}']=Path('Heads')/folder/name
+          with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst,'w',zipfile.ZIP_DEFLATED) as zout:
               for item in zin.infolist():
                   normalized=item.filename.replace('\\','/')
-                  match=None
-                  for suffix,path in replacements.items():
-                      if normalized.endswith(suffix):
-                          match=path; break
-                  if match is not None:
-                      zout.writestr(item, match.read_bytes())
-                  else:
-                      zout.writestr(item, zin.read(item.filename))
-          src.unlink()
-          dst.rename(src)
+                  source=next((p for suffix,p in repl.items() if normalized.endswith(suffix)),None)
+                  zout.writestr(item, source.read_bytes() if source else zin.read(item.filename))
+          src.unlink(); dst.rename(src)
           PY
 
-      - name: Package corrected 1.0.1 source and checksums
+      - name: Package source and checksums
         run: |
           git archive --format=zip --prefix=SpaceTrace/ -o SpaceTrace_1.0.1_Source.zip "$RELEASE_SHA"
           sha256sum SpaceTrace_1.0.1_Windows_x64.zip SpaceTrace_1.0.1_Source.zip > SHA256SUMS.txt
           cat > RELEASE_NOTES_CORRECTED.md <<'EOF'
           SpaceTrace 1.0.1 is the current corrected 1.0 release.
 
-          This package retains the existing 1.0.1 plug-in binaries and Stereo Pair improvements, and replaces the mono Dataset Corrected calibration for IRCAM LISTEN 1050, MIT KEMAR Normal Pinna, and SADIE II D1 / Neumann KU100. The new corrections were generated with Tone Trace Custom Max using the exact same deterministic pink-noise source for reference and target measurement, then selected only where they measured more accurately than the prior correction. Corresponding mono trims were recalibrated for consistent corrected front-center level.
+          The existing 1.0.1 plug-in binaries and Stereo Pair improvements are unchanged. The mono Dataset Corrected calibration for IRCAM LISTEN 1050, MIT KEMAR Normal Pinna, and SADIE II D1 / Neumann KU100 has been replaced with the tested Tone Trace Custom Max same-source pink-noise calibration, with corresponding mono level trims recalibrated for consistent front-center output.
 
-          Heads 4 and 5 and all Stereo Pair correction assets remain unchanged.
-
-          Existing parameter IDs, saved-state format, accessibility behavior, and plug-in binary identity remain unchanged.
+          Heads 4 and 5 and all Stereo Pair correction assets are unchanged. Parameter IDs, saved-state format, accessibility behavior, and plug-in binary identity are unchanged.
           EOF
 
       - name: Replace 1.0.1 release assets in place
