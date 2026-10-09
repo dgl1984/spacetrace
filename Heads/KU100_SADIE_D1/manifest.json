@@ -5,9 +5,9 @@
   "headFile": "head.sthrtf",
   "headSha256": "ac87ffc24e2538ea9a0084d64fbb92e497af5b4c7f7e340a66d047a503fdc4ff",
   "correctionFile": "correction.wav",
-  "correctionSha256": "057fcaaebc9d76a87f6100d8249605077781b91f1b1346e9f314f6d567abf07c",
-  "correctionName": "Tone Trace raw-HRTF global restoration",
-  "correctionVersion": "tonetrace-raw-v1",
+  "correctionSha256": "4bfed2c95950eeaf639054a60a9f7db35afcdb0e60d0b949dc4ccf3e1420a91b",
+  "correctionName": "Tone Trace raw-HRTF global restoration — Custom Max same-source refinement",
+  "correctionVersion": "tonetrace-custom-max-same-pink-20261009",
   "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
   "stereoPairLeftCorrectionSha256": "0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4",
   "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
@@ -18,5 +18,5 @@
   "stereoPairRightGainDb": 0.012492,
   "stereoPairTrimDb": -0.871453,
   "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
-  "monoTrimDb": 4.339644
+  "monoTrimDb": 4.333414
 }

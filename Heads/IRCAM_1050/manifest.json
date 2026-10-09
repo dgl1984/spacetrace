@@ -5,9 +5,9 @@
   "headFile": "head.sthrtf",
   "headSha256": "c89edc84458b4bceb01198db75b951a096675d22e05b2cabf70ce4173f8e0de1",
   "correctionFile": "correction.wav",
-  "correctionSha256": "1557a5a26e15537d486bdefa277d4ea9702016b040ad0901668dbe5f0870cbd7",
-  "correctionName": "SpaceTrace IRCAM 1050 Tonal Restoration",
-  "correctionVersion": "tonetrace-fixed-v1",
+  "correctionSha256": "6fbb06232759e6e1f606739d32a7fb8ffd95e7deaf7ea3bdf9c7cf9a7fff9c62",
+  "correctionName": "SpaceTrace IRCAM 1050 Tonal Restoration — Custom Max same-source refinement",
+  "correctionVersion": "tonetrace-custom-max-same-pink-20261009",
   "levelTrimDb": 0.0,
   "leftGainDb": 0.663791,
   "rightGainDb": -0.663791,
@@ -23,5 +23,5 @@
   "stereoPairRightGainDb": 2.157633,
   "stereoPairTrimDb": -1.522492,
   "stereoPairCalibrationMethod": "Center Stereo Pair at width offset 0; independent equal-power pink input, 80-16000 Hz, native sample rate including fractional delay; source-leg balance equalizes output ear power; pair power reduced 1 dB from prior calibrated pair. Mono ear calibration unchanged.",
-  "monoTrimDb": 5.368667
+  "monoTrimDb": 5.412314
 }

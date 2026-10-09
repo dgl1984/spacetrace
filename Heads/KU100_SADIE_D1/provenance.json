@@ -17,15 +17,18 @@
   },
   "releaseNote": "SOFA remains the archival/source format. head.sthrtf is a derived SpaceTrace runtime representation; preserve the original source and license/provenance.",
   "monoLevelCalibration": {
-    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude, Dataset Corrected, 1 metre, 80-16000 Hz pink weighting; average ear power matches unit mono source. Fixed gain also applies in Raw/Custom to preserve correction gain differences. Stereo Pair and Papa Pan excluded.",
+    "method": "Front center 0/0 degrees at native head sample rate, including runtime fractional-delay magnitude and channel calibration gains; Dataset Corrected; Tone Trace Custom Max used the same deterministic pink-noise samples for reference and target; 80-16000 Hz pink-weighted level calibration; Stereo Pair and Papa Pan excluded.",
     "referenceSampleRate": 44100.0,
-    "referenceGainBeforeDb": -4.339644449779198,
-    "monoTrimDb": 4.339644,
+    "referenceGainBeforeDb": -4.333414,
+    "monoTrimDb": 4.333414,
     "headSha256": "ac87ffc24e2538ea9a0084d64fbb92e497af5b4c7f7e340a66d047a503fdc4ff",
-    "correctionSha256": "057fcaaebc9d76a87f6100d8249605077781b91f1b1346e9f314f6d567abf07c",
-    "headLevelTrimDb": 0,
-    "leftGainDb": 0,
-    "rightGainDb": 0
+    "correctionSha256": "4bfed2c95950eeaf639054a60a9f7db35afcdb0e60d0b949dc4ccf3e1420a91b",
+    "headLevelTrimDb": 0.0,
+    "leftGainDb": 0.0,
+    "rightGainDb": 0.0,
+    "toneTraceMode": "custom-max",
+    "sameSourceCalibration": true,
+    "calibrationDate": "2026-10-09"
   },
   "stereoPairCorrection": {
     "method": "Direct independent source-leg correction IRs; constant per-leg normalization only; no residual convolution.",

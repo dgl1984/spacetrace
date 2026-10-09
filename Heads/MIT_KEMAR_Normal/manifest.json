@@ -5,9 +5,9 @@
   "headFile": "head.sthrtf",
   "headSha256": "9be279b26f9d094b44f55dc37f73fd1022794dec07406d77d6ed1ddc57e53ce6",
   "correctionFile": "correction.wav",
-  "correctionSha256": "02c4e54ea9161e881d2b8f2ad4223667f9d1599f43845015fbb9398d62fc9155",
-  "correctionName": "SpaceTrace KEMAR Tonal Restoration",
-  "correctionVersion": "tonetrace-fixed-v1",
+  "correctionSha256": "6e5e5521a4287a0a0a53c9c6a7f4dde80f4e04e78282168a4e9d889f92414674",
+  "correctionName": "SpaceTrace KEMAR Tonal Restoration — Custom Max same-source refinement",
+  "correctionVersion": "tonetrace-custom-max-same-pink-20261009",
   "levelTrimDb": 0.0,
   "leftGainDb": -0.0,
   "rightGainDb": 0.0,
@@ -23,5 +23,5 @@
   "stereoPairRightGainDb": -0.0,
   "stereoPairTrimDb": -4.373117,
   "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0",
-  "monoTrimDb": 4.673739
+  "monoTrimDb": 4.679174
 }
