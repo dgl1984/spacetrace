@@ -35,14 +35,29 @@
   },
   "currentStereoPairFiles": {
     "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-    "stereoPairLeftCorrectionSha256": "29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3",
+    "stereoPairLeftCorrectionSha256": "934e0188f7e1dbd26c2545ccaf075a1be516c34c429616ea22d4e967e92d5960",
     "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-    "stereoPairRightCorrectionSha256": "e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c",
+    "stereoPairRightCorrectionSha256": "bb599aae060663186eff79747cf7ba5a7b603b9356442766413fd90fcac35c7f",
     "stereoPairCorrectionName": "FABIAN HATO 0 Stereo Pair Tonal Restoration",
-    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
-    "stereoPairLeftGainDb": -0.002023,
-    "stereoPairRightGainDb": 0.002023,
-    "stereoPairTrimDb": 0.024885,
-    "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0"
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261009-extra-ir-truncated",
+    "stereoPairLeftGainDb": 0.014804,
+    "stereoPairRightGainDb": -0.014804,
+    "stereoPairTrimDb": -0.690521,
+    "stereoPairCalibrationMethod": "Centered Stereo Pair at 90/270 degrees, Width Offset 0; pink-weighted 80-16000 Hz binaural power including head level trim, ear gains, and the final convolved/faded correction WAVs; equal-and-opposite source gains; common pair trim matches independent unit-power stereo input. Normalization is applied by fixed gain metadata."
+  },
+  "stereoPairPostCorrection": {
+    "method": "full linear convolution, retain original 8640-tap window, 40 ms half-cosine fade on retained tail; no WAV amplitude scaling",
+    "sourceFile": "extra stereo correct 5.wav",
+    "sourceSha256": "c97e0067160e8dd68f248f8de4dc319bc4c9ed55a9fdaa4658c1e1f584451cde",
+    "sampleRate": 48000,
+    "sourceTaps": 8640,
+    "baseTaps": 8640,
+    "fullConvolutionTaps": 17279,
+    "outputTaps": 8640,
+    "tailFadeMs": 40.0,
+    "tailFadeSamples": 1920,
+    "normalization": "Fixed runtime Stereo Pair gain metadata, including head level trim; no WAV amplitude scaling",
+    "baseLeftSha256": "29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3",
+    "baseRightSha256": "e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c"
   }
 }

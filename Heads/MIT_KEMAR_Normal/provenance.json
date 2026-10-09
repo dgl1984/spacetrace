@@ -32,14 +32,29 @@
   },
   "currentStereoPairFiles": {
     "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-    "stereoPairLeftCorrectionSha256": "85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564",
+    "stereoPairLeftCorrectionSha256": "0cf41d3a5dba9742805d77bf7de05e4b2e50c25bb1c41cc0efde7cb5bfd08705",
     "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-    "stereoPairRightCorrectionSha256": "24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df",
+    "stereoPairRightCorrectionSha256": "cfdcd48d7060af0f11982a68b1b57cb85a167740378feebacf1fc463d48d86ed",
     "stereoPairCorrectionName": "MIT KEMAR Normal Pinna Stereo Pair Tonal Restoration",
-    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-v3",
-    "stereoPairLeftGainDb": 0.0,
-    "stereoPairRightGainDb": -0.0,
-    "stereoPairTrimDb": -4.373117,
-    "stereoPairCalibrationMethod": "90/270 deg Raw source legs at Width Offset 0; per-leg Tone Trace correction normalized to preserve pink-weighted 80-16000 Hz binaural source power after head channel calibration; equal-and-opposite source balance; common pair trim matches independent unit-power stereo reference at center azimuth 0"
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261009-extra-ir-truncated",
+    "stereoPairLeftGainDb": 0.010049,
+    "stereoPairRightGainDb": -0.010049,
+    "stereoPairTrimDb": -4.873236,
+    "stereoPairCalibrationMethod": "Centered Stereo Pair at 90/270 degrees, Width Offset 0; pink-weighted 80-16000 Hz binaural power including head level trim, ear gains, and the final convolved/faded correction WAVs; equal-and-opposite source gains; common pair trim matches independent unit-power stereo input. Normalization is applied by fixed gain metadata."
+  },
+  "stereoPairPostCorrection": {
+    "method": "full linear convolution, retain original 8640-tap window, 40 ms half-cosine fade on retained tail; no WAV amplitude scaling",
+    "sourceFile": "extra stereo correct 2.wav",
+    "sourceSha256": "d4f8a9960ea0c16321841a0d41077b7974987e9eb07a2ec2220076ffeacc1ff5",
+    "sampleRate": 48000,
+    "sourceTaps": 8640,
+    "baseTaps": 8640,
+    "fullConvolutionTaps": 17279,
+    "outputTaps": 8640,
+    "tailFadeMs": 40.0,
+    "tailFadeSamples": 1920,
+    "normalization": "Fixed runtime Stereo Pair gain metadata, including head level trim; no WAV amplitude scaling",
+    "baseLeftSha256": "85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564",
+    "baseRightSha256": "24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df"
   }
 }

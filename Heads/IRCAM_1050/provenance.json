@@ -44,14 +44,29 @@
   },
   "currentStereoPairFiles": {
     "stereoPairLeftCorrectionFile": "stereo_pair_left_correction.wav",
-    "stereoPairLeftCorrectionSha256": "5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1",
+    "stereoPairLeftCorrectionSha256": "d82e500be6f3b5aa03e78a732b2502e6ab4de98cf94a8776ba9b9b77e8d96f7d",
     "stereoPairRightCorrectionFile": "stereo_pair_right_correction.wav",
-    "stereoPairRightCorrectionSha256": "c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480",
+    "stereoPairRightCorrectionSha256": "55522b7727cb8c888050e806c4c1af7422cae2e2d308ed9ee69fd431e9e7f681",
     "stereoPairCorrectionName": "IRCAM LISTEN 1050 Stereo Pair Tonal Restoration",
-    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261006",
-    "stereoPairLeftGainDb": -2.157633,
-    "stereoPairRightGainDb": 2.157633,
-    "stereoPairTrimDb": -1.522492,
-    "stereoPairCalibrationMethod": "Center Stereo Pair at width offset 0; independent equal-power pink input, 80-16000 Hz, native sample rate including fractional delay; source-leg balance equalizes output ear power; pair power reduced 1 dB from prior calibrated pair. Mono ear calibration unchanged."
+    "stereoPairCorrectionVersion": "tonetrace-stereo-pair-corrected-20261009-extra-ir-truncated",
+    "stereoPairLeftGainDb": -1.59535,
+    "stereoPairRightGainDb": 1.59535,
+    "stereoPairTrimDb": -0.859045,
+    "stereoPairCalibrationMethod": "Centered Stereo Pair at 90/270 degrees, Width Offset 0; pink-weighted 80-16000 Hz binaural power including head level trim, ear gains, and the final convolved/faded correction WAVs; equal-and-opposite source gains; common pair trim matches independent unit-power stereo input. Normalization is applied by fixed gain metadata."
+  },
+  "stereoPairPostCorrection": {
+    "method": "full linear convolution, retain original 8640-tap window, 40 ms half-cosine fade on retained tail; no WAV amplitude scaling",
+    "sourceFile": "extra stereo correct 1.wav",
+    "sourceSha256": "de7180e0f0eea1352d3423be34c9e2e22017675a0cb8626b4d1c3337e8368bd2",
+    "sampleRate": 48000,
+    "sourceTaps": 8640,
+    "baseTaps": 8640,
+    "fullConvolutionTaps": 17279,
+    "outputTaps": 8640,
+    "tailFadeMs": 40.0,
+    "tailFadeSamples": 1920,
+    "normalization": "Fixed runtime Stereo Pair gain metadata, including head level trim; no WAV amplitude scaling",
+    "baseLeftSha256": "5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1",
+    "baseRightSha256": "c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480"
   }
 }
