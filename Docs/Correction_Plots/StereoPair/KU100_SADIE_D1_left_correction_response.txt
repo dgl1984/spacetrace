@@ -1,4 +1,4 @@
-Correction plot audit — SADIE II D1 / Neumann KU100 Stereo Pair left
+Correction plot audit — SADIE II D1 / Neumann KU100 — Stereo Pair left correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
 Strongest boost in plotted range: +8.82 dB at approximately 7989 Hz
@@ -9,3 +9,5 @@ Broad-band means:
 - mids / presence (1000-4000 Hz): mean +1.39 dB
 - upper mids / treble (4000-16000 Hz): mean +0.35 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
+Source file: Heads/KU100_SADIE_D1/stereo_pair_left_correction.wav
+Source SHA-256: 0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4

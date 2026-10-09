@@ -1,4 +1,4 @@
-Correction plot audit — TH Köln KU100 FULL2DEG Stereo Pair right
+Correction plot audit — TH Köln KU100 FULL2DEG — Stereo Pair right correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
 Strongest boost in plotted range: +13.36 dB at approximately 16190 Hz
@@ -9,3 +9,5 @@ Broad-band means:
 - mids / presence (1000-4000 Hz): mean +1.88 dB
 - upper mids / treble (4000-16000 Hz): mean +2.40 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
+Source file: Heads/KU100_FULL2DEG/stereo_pair_right_correction.wav
+Source SHA-256: 57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207

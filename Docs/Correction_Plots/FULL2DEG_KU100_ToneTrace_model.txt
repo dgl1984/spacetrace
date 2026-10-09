@@ -1,4 +1,4 @@
-Correction plot audit — TH Köln / Bernschütz FULL2DEG KU100 — Tone Trace Correction Model
+Correction plot audit — TH Köln KU100 FULL2DEG — Tone Trace model
 Source type: Tone Trace model nodes
 Plotted range: 20-20000 Hz (log-frequency axis)
 Strongest boost in plotted range: +11.70 dB at approximately 7987 Hz
@@ -9,3 +9,5 @@ Broad-band means:
 - mids / presence (1000-4000 Hz): mean -1.14 dB
 - upper mids / treble (4000-16000 Hz): mean +1.51 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
+Source file: Docs/Correction_Models/FULL2DEG_KU100_ToneTrace.ttm
+Source SHA-256: 72a585d5e4ad4b89f79c45e6b5b1182591e0cb3c115730a32daf1886fd905ce9

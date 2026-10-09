@@ -108,7 +108,7 @@ def parser():
     p.add_argument("--low-hz", type=float, default=20.0, help="Left plot bound (default 20 Hz).")
     p.add_argument("--high-hz", type=float, default=20000.0, help="Right plot bound (default 20 kHz).")
     p.add_argument("--y-min-db", type=float, default=-18.0, help="Bottom dB bound (default -18 dB).")
-    p.add_argument("--y-max-db", type=float, default=26.0, help="Top dB bound (default +26 dB).")
+    p.add_argument("--y-max-db", type=float, default=32.0, help="Top dB bound (default +32 dB).")
     p.add_argument("--overwrite", action="store_true", help="Replace existing PNG/description outputs.")
     return p
 

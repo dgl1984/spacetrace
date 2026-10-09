@@ -6,15 +6,26 @@ with scripts/plot_correction.py. Every PNG has a matching .txt description deriv
 from the same numeric curve.
 
 The standard plots use 20 Hz-20 kHz on a logarithmic frequency axis and a common
--18 dB to +26 dB vertical range so the five included heads can be compared without
+-18 dB to +32 dB vertical range so the five included heads can be compared without
 decorative styling or changing scales from one head to another.
+The upper bound includes the full Stereo Pair correction peaks.
 
 For each head there are two useful views when the source model is retained:
 - *_correction_response.png: magnitude response of the actual correction WAV shipped.
-- *_ToneTrace_model.png: the original Tone Trace model curve.
+- *_ToneTrace_model.png: the current retained Tone Trace model curve.
+
+Models/ retains alternate model-image paths, regenerated from those same models.
+Every description identifies its source file and SHA-256. index.json records the
+source, image, and description hashes for the complete set.
+
+To refresh this set from a source checkout:
+  python scripts/refresh_correction_plots.py
+To check that the plots match their current sources:
+  python scripts/refresh_correction_plots.py --check
 
 The files in this directory describe the global Mono Point Source correction.
-StereoPair/ contains the actual left/right WAV response plots for all five heads. These exclude the separate runtime gains recorded in the manifests. No old residual composition or tail fade is implied by these replacement IRs.
+StereoPair/ contains the actual left/right WAV response plots for all five heads.
+These show the IR response; separate runtime gains are recorded in the manifests.
 
 The paired text description reports the strongest boost, deepest cut, and broad-band
 means. It intentionally does not claim anything about localization quality or

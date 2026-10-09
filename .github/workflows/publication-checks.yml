@@ -14,5 +14,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/check_public_source.py
+      - run: python scripts/refresh_correction_plots.py --check
       - run: python tests/test_public_source.py
       - run: python tests/test_release_staging.py

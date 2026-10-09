@@ -91,6 +91,10 @@ The repository carries SpaceTrace's first-party licence and separate third-party
 
 Run `python scripts/check_public_source.py` before pushing source, and run
 `python tests/test_release_staging.py` before publishing a Windows package.
+After changing correction IRs or retained Tone Trace models, run
+`python scripts/refresh_correction_plots.py` and commit the regenerated images,
+descriptions, and plot index. `python scripts/refresh_correction_plots.py --check`
+checks their source and output hashes without requiring plotting dependencies.
 Review new documentation for private discussion or development notes; automated
 checks catch known filenames and handoff headings but cannot replace that review.
 

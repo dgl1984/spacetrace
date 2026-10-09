@@ -1,4 +1,4 @@
-Correction plot audit — IRCAM LISTEN 1050 — Dataset Correction
+Correction plot audit — IRCAM LISTEN 1050 — Mono correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
 Strongest boost in plotted range: +18.00 dB at approximately 18160 Hz
@@ -9,3 +9,5 @@ Broad-band means:
 - mids / presence (1000-4000 Hz): mean -6.12 dB
 - upper mids / treble (4000-16000 Hz): mean +3.34 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
+Source file: Heads/IRCAM_1050/correction.wav
+Source SHA-256: 6fbb06232759e6e1f606739d32a7fb8ffd95e7deaf7ea3bdf9c7cf9a7fff9c62

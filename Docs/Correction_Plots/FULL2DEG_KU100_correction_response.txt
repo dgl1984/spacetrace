@@ -1,4 +1,4 @@
-Correction plot audit — TH Köln / Bernschütz FULL2DEG KU100 — Dataset Correction
+Correction plot audit — TH Köln KU100 FULL2DEG — Mono correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
 Strongest boost in plotted range: +11.64 dB at approximately 7986 Hz
@@ -9,3 +9,5 @@ Broad-band means:
 - mids / presence (1000-4000 Hz): mean -1.27 dB
 - upper mids / treble (4000-16000 Hz): mean +1.21 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
+Source file: Heads/KU100_FULL2DEG/correction.wav
+Source SHA-256: e31fe3881265c6cfa15f6083808987a7e62f9672b1e6bdec62b5bb63c7603845
