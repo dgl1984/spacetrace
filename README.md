@@ -1,8 +1,32 @@
-# SpaceTrace 1.0.1 — Five-Head Spatializer, VST3 + CLAP
+# SpaceTrace — Put a sound somewhere
 
-SpaceTrace is a binaural HRTF spatializer built to keep spatial audio practical whether you work with a mouse, keyboard, screen reader, host automation, or the host's generic parameter view.
+Move a voice around the listener, lift an effect above them, or turn the angle of a stereo field recording within a soundscape. SpaceTrace is a binaural spatializer for headphone listening, available as a Windows x64 VST3 and CLAP plug-in.
 
-SpaceTrace 1.0.1 ships five heads:
+It uses measurements of how sound reaches the ears from different directions to give each placement its timing, level, and tonal cues. Five heads offer different sets of those cues. Their prepared EQ and level calibration make it easier to compare the placement and movement you hear.
+
+[**Download SpaceTrace 1.0.1**](https://github.com/dgl1984/spacetrace/releases/latest) · [**Read the manual**](Docs/MANUAL.md)
+
+## Install
+
+1. Download **SpaceTrace_1.0.1_Windows_x64.zip** from the release page and extract it.
+2. Place the complete `SpaceTrace` folder in a plug-in location scanned by your DAW. Its plug-in settings or installation guide will show which locations it uses. Keep the accompanying folders together: `Heads/` contains the head models, corrections, and calibration settings.
+3. Scan for new plug-ins, then insert **SpaceTrace** on an audio track. Choose VST3 or CLAP according to your DAW's support; both provide the same controls and sound.
+
+When updating, replace the accompanying folders along with the plug-ins. The manual explains [installation](Docs/MANUAL.md#install-spacetrace) and [keeping the head data used by an earlier project](Docs/MANUAL.md#updates-and-project-recall).
+
+## Try a moving sound
+
+Put on headphones and play a voice, percussion loop, or another familiar recording. Start with **Modern HRTF**, **Mono Point Source**, **Dataset Corrected**, and **Distance 1 m**.
+
+Move **Azimuth** from 0° toward 90° to take the sound from the front toward your left. Continue through 180° behind you and 270° to your right. To begin by moving right, start at 360° and move downward. Try **Elevation** for height, then **Distance** for changes in level and high-frequency detail.
+
+For a stereo recording, choose **Stereo Pair**. It places the input channels as two linked sources that rotate together. Try turning a crowd recording to one side of a scene, or moving rain around a stationary voice. **Width Offset** changes the placement of the two sources toward the front or rear of the pair. The ambience already in the recording moves with it.
+
+Mono Point Source combines the input channels inside the plug-in. Both modes produce a two-channel binaural output.
+
+The [manual's listening exercises](Docs/MANUAL.md#hear-your-first-moving-sound) explain the controls alongside things to try and listen for. It also covers [exact value entry and automation](Docs/MANUAL.md#set-precise-values-and-automate).
+
+## Compare the five heads
 
 1. IRCAM LISTEN 1050
 2. MIT KEMAR Normal Pinna
@@ -10,64 +34,18 @@ SpaceTrace 1.0.1 ships five heads:
 4. TH Köln / Bernschütz FULL2DEG KU100
 5. FABIAN HATO 0
 
-Stereo Pair uses separate direct left/right correction IRs for all five heads. Head numbers follow the plug-in menu: 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Current correction response plots and calibration metadata accompany the head packages.
+Switch heads while repeating the same movement. Listen for how clearly you can follow the sound, distinguish front from rear, and hear changes in height. The [head comparison](Docs/MANUAL.md#find-a-head-that-works-for-you) describes their differences and links to published applications of the source datasets.
 
-## Start here
+Each head includes correction EQ for Mono Point Source and separate corrections for the two Stereo Pair sources. The manual follows [how those filters and levels were refined](Docs/MANUAL.md#explore-the-eq-and-level-refinements), with links to the data and instructions for plotting the current responses.
 
-Mono Point Source has a fixed level calibration for each head: with identical left/right input (or a true mono input), the default front-center position is matched to the input's 80 Hz–16 kHz pink-weighted level. It preserves the spatial and tonal response. Stereo-to-mono averaging can still reduce differing or opposite-polarity material; there is no automatic gain control. Stereo Pair retains its separate calibration.
+SpaceTrace also includes **Papa Pan**, a recreation of the horizontal panning approach from the game-audio engine behind Papa Sangre and Audio Defence. Try its 24 stepped directions alongside Modern HRTF's interpolated movement. [Explore Papa Pan](Docs/MANUAL.md#try-papa-pans-historical-movement).
 
-Read `Docs/MANUAL.md` for the practical workflow and the engineering details behind it. The shortest possible start is:
+## Prepare your own head or correction
 
-1. Insert SpaceTrace and leave **Renderer** on Modern HRTF and **Input Mode** on Mono Point Source.
-2. Pick a **Head**.
-3. Leave **Tone** on Dataset Corrected.
-4. Move **Azimuth**, **Elevation**, and **Distance**. **Air Loss** defaults on and affects only the subtle synthetic HF absorption beyond 1 m.
-5. Remember that 0° and 360° are both straight ahead: increasing from 0° starts left; to move right from front-center, begin at 360° and move downward.
+Load a correction WAV to shape the tone, or prepare a custom head from compatible SOFA spatial-measurement data. The [custom-head guide](Docs/CUSTOM_HEADS.md) and [script reference](scripts/README.md) cover conversion, measurement, correction, and packaging.
 
-## Accessibility
+[Tone Trace](https://github.com/dgl1984/ToneTrace) is the separate frequency-response comparison and correction-design tool used to prepare the supplied heads.
 
-SpaceTrace follows one hard rule: **one parameter, one user-facing control**. The graphical position display is output-only; it does not duplicate Azimuth, Elevation, or Distance as another editable surface.
+## Licence
 
-There is no private OneCore/MSAPI/NVDA speech layer. The normal controls expose normal accessibility information.
-
-Keyboard additions include Home/End on sliders and combo boxes, 10° Page Up/Page Down steps on Azimuth/Elevation, and Enter/F2 exact entry on sliders. These commands exist because JUCE's stock controls do not supply all of them by default.
-
-## VST3 and CLAP are the same implementation
-
-Both formats are wrappers around the same JUCE processor/editor/state/core target. There is no separate CLAP DSP or UI implementation.
-
-SpaceTrace exposes one true Bypass parameter to the host; the wrapper bypass points at that same parameter.
-
-Modern HRTF also offers **Stereo Pair**: input Left and Right are rendered as a linked binaural pair around the selected center Azimuth, then summed through the normal shared Distance/Air Loss/Output stages. **Width Offset** (Stereo Pair only) ranges from -45° to +45° and bows the two sources symmetrically around the canonical 90°/270° reference geometry. Zero is the calibrated reference. Papa Pan remains mono-only.
-
-## Portable release layout
-
-The public Windows package is deliberately small:
-
-```text
-SpaceTrace/
-    SpaceTrace.vst3
-    SpaceTrace.clap
-    README.md
-    LICENSE.txt
-    Heads/
-    Docs/
-    Licenses/
-    scripts/
-```
-
-Keep the accompanying folders with the plug-ins when installing or updating SpaceTrace. The `Heads/` folder contains the sound corrections as well as the head models.
-
-## Custom heads
-
-SOFA is the archival/source format. `.sthrtf` is SpaceTrace's prepared runtime format. The public Python tools in `scripts/` let you convert compatible SOFA files, validate a head, measure front-center balance, normalize a Tone Trace correction, prepare optional 90°/270° Stereo Pair correction/loudness calibration, generate correction plots/text descriptions, and package the result.
-
-See `Docs/CUSTOM_HEADS.md` and `scripts/README.md`.
-
-Tone Trace is optional for normal SpaceTrace use. If you are creating a custom dataset correction, the official project/releases are linked from the manual and custom-head guide.
-
-## Licensing
-
-`LICENSE.txt` covers first-party Lanes Audio SpaceTrace material under Apache License 2.0 plus the Commons Clause License Condition v1.0, matching the first-party licensing model used by Tone Trace.
-
-The bundled HRTF datasets and third-party build/framework components retain their own terms. They are **not** blanket-licensed by SpaceTrace's first-party license. Start with `Licenses/THIRD_PARTY_NOTICES.txt`, and keep the `LICENSE.txt`/`provenance.json` that travels with each head package.
+SpaceTrace's first-party material uses Apache License 2.0 with the Commons Clause License Condition v1.0; see [LICENSE.txt](LICENSE.txt). The bundled datasets and dependencies carry their own terms in the [third-party notices](Licenses/THIRD_PARTY_NOTICES.txt). Each head also includes its source, processing history, and licence records.
