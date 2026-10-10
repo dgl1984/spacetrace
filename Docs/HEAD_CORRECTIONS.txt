@@ -36,7 +36,16 @@ Stereo inputs are still averaged as (L+R)/2 in Mono Point Source. Independent
 equal-power channels lose 3.01 dB in that fold-down; opposite polarity cancels.
 Position and content can change output level. This is not an AGC or limiter.
 
-All five heads use separate direct Stereo Pair correction WAVs. Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each side preserves its exported EQ shape with a constant normalization gain. IRCAM additionally uses a fixed source balance measured for equal ear power with independent pink input at the centered default geometry, plus a 1 dB pair-level reduction. Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime gains are recorded in each head manifest.
+All five heads use separate left-source and right-source Stereo Pair correction WAVs.
+Head order is 1 IRCAM, 2 MIT KEMAR, 3 SADIE, 4 FULL2DEG, 5 FABIAN. Each final WAV
+combines the original correction with an additional correction IR for that head.
+The convolution retains the original 8,640 samples at 48 kHz (180 ms), with a
+40 ms half-cosine fade at the end. The composed WAVs retain their amplitude;
+fixed source-balance gains and a common pair trim provide the level calibration.
+This calibration includes the head-level and ear-balance gains, using independent
+pink-noise inputs over 80 Hz-16 kHz at the centered default geometry.
+Current response plots are in Docs/Correction_Plots/StereoPair; separate runtime
+gains are recorded in each head manifest. See Docs/MANUAL.md for the full method.
 
 The PNG files under Docs/Correction_Plots show the actual correction WAV response and
 retained Tone Trace model curves. Matching .txt files describe those curves from the

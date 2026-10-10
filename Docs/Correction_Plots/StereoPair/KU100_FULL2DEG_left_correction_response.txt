@@ -1,13 +1,13 @@
 Correction plot audit — TH Köln KU100 FULL2DEG — Stereo Pair left correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
-Strongest boost in plotted range: +11.08 dB at approximately 16965 Hz
-Deepest cut in plotted range: -3.20 dB at approximately 10609 Hz
+Strongest boost in plotted range: +13.45 dB at approximately 8249 Hz
+Deepest cut in plotted range: -5.89 dB at approximately 10608 Hz
 Broad-band means:
-- low bass / low mids (80-250 Hz): mean +0.64 dB
-- low mids / mids (250-1000 Hz): mean -1.08 dB
-- mids / presence (1000-4000 Hz): mean +1.56 dB
-- upper mids / treble (4000-16000 Hz): mean +1.85 dB
+- low bass / low mids (80-250 Hz): mean -1.65 dB
+- low mids / mids (250-1000 Hz): mean +2.01 dB
+- mids / presence (1000-4000 Hz): mean +1.44 dB
+- upper mids / treble (4000-16000 Hz): mean +1.03 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
 Source file: Heads/KU100_FULL2DEG/stereo_pair_left_correction.wav
-Source SHA-256: f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf
+Source SHA-256: 78f6cd5b413da74afc648084aabc924ec311d6b7a1a223e515fbad5e2aec15d3

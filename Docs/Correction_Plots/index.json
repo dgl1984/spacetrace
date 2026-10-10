@@ -23,18 +23,18 @@
       "image": "Docs/Correction_Plots/StereoPair/IRCAM_1050_left_correction_response.png",
       "title": "IRCAM LISTEN 1050 — Stereo Pair left correction IR",
       "description": "Docs/Correction_Plots/StereoPair/IRCAM_1050_left_correction_response.txt",
-      "source_sha256": "5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1",
-      "image_sha256": "14b699801109b2f8860ec116e3ddf5e4f2334b744e6c4fe89a1c487f23b12a72",
-      "description_sha256": "3e3d686235f59bbbd8850d6736d287c3ebf0ed31a4c4f776e5919e493010bb9e"
+      "source_sha256": "d82e500be6f3b5aa03e78a732b2502e6ab4de98cf94a8776ba9b9b77e8d96f7d",
+      "image_sha256": "6910ac9cbef7d040a93c5dc3d398ab6e7c30aa0a0e0accc3db2469a6030ac238",
+      "description_sha256": "8c2858dc109cf49066cced2105d41358db78bc6ea8c76ad0ca3eb913533711d2"
     },
     {
       "source": "Heads/IRCAM_1050/stereo_pair_right_correction.wav",
       "image": "Docs/Correction_Plots/StereoPair/IRCAM_1050_right_correction_response.png",
       "title": "IRCAM LISTEN 1050 — Stereo Pair right correction IR",
       "description": "Docs/Correction_Plots/StereoPair/IRCAM_1050_right_correction_response.txt",
-      "source_sha256": "c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480",
-      "image_sha256": "d9e19f2133724f97d604cbd6f0508531a7687a7f6c82458257bb3e28e77cf77a",
-      "description_sha256": "858b0364b5c5b14698f3be286f72022a7d3ca4081c5e915453a8960ef48e317c"
+      "source_sha256": "55522b7727cb8c888050e806c4c1af7422cae2e2d308ed9ee69fd431e9e7f681",
+      "image_sha256": "384de9ef6a5c1d1b77de3d3b4d84514b6e5f905ce88bae3e0f73b7a93c9b3348",
+      "description_sha256": "d36b68b56f955cd887eafa18c4145df5e530d510afe281bb38e5b0ddc4563a85"
     },
     {
       "source": "Docs/Correction_Models/IRCAM_1050_ToneTrace.ttm",
@@ -68,18 +68,18 @@
       "image": "Docs/Correction_Plots/StereoPair/MIT_KEMAR_Normal_left_correction_response.png",
       "title": "MIT KEMAR Normal Pinna — Stereo Pair left correction IR",
       "description": "Docs/Correction_Plots/StereoPair/MIT_KEMAR_Normal_left_correction_response.txt",
-      "source_sha256": "85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564",
-      "image_sha256": "412a287e5a195aee384ce7b6f5f3dafba96e75812379bef1534961f9cb0e7b41",
-      "description_sha256": "afdc1c63a22e18d622baa1693fb969ce50ad0def47f0601765c7c7d6a7a79e04"
+      "source_sha256": "0cf41d3a5dba9742805d77bf7de05e4b2e50c25bb1c41cc0efde7cb5bfd08705",
+      "image_sha256": "cd987acbd06f5246af7f76d4ca6675437b168041e5ae2c6929ed0ad4cc018176",
+      "description_sha256": "150a36037aa9862ebc0e92a5b2a28c4fa50287318f73a14b8dc6e67f03d4455e"
     },
     {
       "source": "Heads/MIT_KEMAR_Normal/stereo_pair_right_correction.wav",
       "image": "Docs/Correction_Plots/StereoPair/MIT_KEMAR_Normal_right_correction_response.png",
       "title": "MIT KEMAR Normal Pinna — Stereo Pair right correction IR",
       "description": "Docs/Correction_Plots/StereoPair/MIT_KEMAR_Normal_right_correction_response.txt",
-      "source_sha256": "24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df",
-      "image_sha256": "f10b413990f3a7a9bae72368f1a816176ab3e75f7d33645186143efdf17dac38",
-      "description_sha256": "1161080eb1c5a150d094be56bd778f80f29642ab2d091aa97ea23513d5fb6be9"
+      "source_sha256": "cfdcd48d7060af0f11982a68b1b57cb85a167740378feebacf1fc463d48d86ed",
+      "image_sha256": "82ed3ab3c481f9e79e5e66999e579a7669a3940d3f81e5e398036961bf0d9814",
+      "description_sha256": "e99a9999cf5fad98ffd12a5a5f38a14e38ecf48f4e3d0dfc7a3ee457a1e85d05"
     },
     {
       "source": "Docs/Correction_Models/MIT_KEMAR_Normal_ToneTrace.ttm",
@@ -113,18 +113,18 @@
       "image": "Docs/Correction_Plots/StereoPair/KU100_SADIE_D1_left_correction_response.png",
       "title": "SADIE II D1 / Neumann KU100 — Stereo Pair left correction IR",
       "description": "Docs/Correction_Plots/StereoPair/KU100_SADIE_D1_left_correction_response.txt",
-      "source_sha256": "0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4",
-      "image_sha256": "579fbb63388a9c21813badf44a327e14568e560ccfd0aad015277c6e255e3f0d",
-      "description_sha256": "cd2067b072969e9e8759330edd7b5c9c9d9b77493fbdd1a7f3fc34811b59a236"
+      "source_sha256": "847f5eade8ef4ef07a5d40ddbf0e0ff6ec10b2057c63d7221d3fb5b60fdccb8f",
+      "image_sha256": "c9bba3d1f2981f3bd1277698f683b0c4b213c971e1c181cfe643c94215fc776c",
+      "description_sha256": "49f56438f1d5969f2073461b8f57f04fb3ce08e3643a52c5a7d59d22652acd46"
     },
     {
       "source": "Heads/KU100_SADIE_D1/stereo_pair_right_correction.wav",
       "image": "Docs/Correction_Plots/StereoPair/KU100_SADIE_D1_right_correction_response.png",
       "title": "SADIE II D1 / Neumann KU100 — Stereo Pair right correction IR",
       "description": "Docs/Correction_Plots/StereoPair/KU100_SADIE_D1_right_correction_response.txt",
-      "source_sha256": "081a0d7777884111443d58a785b94854ccae5c0e3926628039a6a03e60392bb8",
-      "image_sha256": "1dba56e87855f471150717df2ca7ec28fc7e70f159520508faed39a66d0c612b",
-      "description_sha256": "ff0db36c92743ecc65549f35e256837986f88415e94a12ea8fe7abbc498357f3"
+      "source_sha256": "3de19222e0e7df4df35099a2771423b06efc1d5ec71fb8db36ef2da9620949c0",
+      "image_sha256": "c1e987b72e0f3cd3b8d0365af37eda89a8eeef38b0de16a0db0f337c3d63c01a",
+      "description_sha256": "b2fe72785eaef70f3a706ee90a3481745513c27b71d2ae1bf85b304b31e5ebc7"
     },
     {
       "source": "Docs/Correction_Models/KU100_SADIE_D1_ToneTrace.ttm",
@@ -158,18 +158,18 @@
       "image": "Docs/Correction_Plots/StereoPair/KU100_FULL2DEG_left_correction_response.png",
       "title": "TH Köln KU100 FULL2DEG — Stereo Pair left correction IR",
       "description": "Docs/Correction_Plots/StereoPair/KU100_FULL2DEG_left_correction_response.txt",
-      "source_sha256": "f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf",
-      "image_sha256": "a8bfcfb2f4bf75295d910fd59471e07c5d25c3777fe5dac856c2cce6f3ebeca5",
-      "description_sha256": "57eed8a892717e145922f9a7b937fc5d7780dea80213bb655845dc8717187fc5"
+      "source_sha256": "78f6cd5b413da74afc648084aabc924ec311d6b7a1a223e515fbad5e2aec15d3",
+      "image_sha256": "b0031a86667a7b3f83ba2c6b5b80e0669697210fb17a1e4e74a4f5dcb6a31cd6",
+      "description_sha256": "5c8cb687338fb55297e5872364f4119f6269c35cdcbc9baa9488a2a389335e6a"
     },
     {
       "source": "Heads/KU100_FULL2DEG/stereo_pair_right_correction.wav",
       "image": "Docs/Correction_Plots/StereoPair/KU100_FULL2DEG_right_correction_response.png",
       "title": "TH Köln KU100 FULL2DEG — Stereo Pair right correction IR",
       "description": "Docs/Correction_Plots/StereoPair/KU100_FULL2DEG_right_correction_response.txt",
-      "source_sha256": "57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207",
-      "image_sha256": "61a1f90df46694c705a9cd42f4ecc92ca61e12e850e541232e9de44ae1d5aaae",
-      "description_sha256": "6dceb717042b4a19c63bf463cee61111366bb8ecf375b18e2799b005e2d4d58a"
+      "source_sha256": "e964bcc077d9ddef4367efc7f418672adc1f56fb761e7cfc3e897f87cb085e72",
+      "image_sha256": "389919e6abd0ddf85b10bde4c5720cad02cbdc62be2c3492a2845d81b7075388",
+      "description_sha256": "211b71539f79a1303850841ac34ccd27d35daad1587d7278660050fdca9e55f3"
     },
     {
       "source": "Docs/Correction_Models/FULL2DEG_KU100_ToneTrace.ttm",
@@ -194,18 +194,18 @@
       "image": "Docs/Correction_Plots/StereoPair/FABIAN_HATO0_left_correction_response.png",
       "title": "FABIAN HATO 0 — Stereo Pair left correction IR",
       "description": "Docs/Correction_Plots/StereoPair/FABIAN_HATO0_left_correction_response.txt",
-      "source_sha256": "29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3",
-      "image_sha256": "0bf53421597c233e4b9dc60e33e4fb229ba7274ba09fe84adff93baaa73f2002",
-      "description_sha256": "e4245cb6ac6046b73684ade38995c25addd26fc1e82bd21899b226a656dbe4e7"
+      "source_sha256": "934e0188f7e1dbd26c2545ccaf075a1be516c34c429616ea22d4e967e92d5960",
+      "image_sha256": "1b84630e210a19ead4c1f0101ef6b0f94f3e57903d7fa36f1f9320cacfda1328",
+      "description_sha256": "61d79db22e2f82a55bb4bb28fef0493037f6a6c247d7ebaadad848680a7f2973"
     },
     {
       "source": "Heads/FABIAN_HATO0/stereo_pair_right_correction.wav",
       "image": "Docs/Correction_Plots/StereoPair/FABIAN_HATO0_right_correction_response.png",
       "title": "FABIAN HATO 0 — Stereo Pair right correction IR",
       "description": "Docs/Correction_Plots/StereoPair/FABIAN_HATO0_right_correction_response.txt",
-      "source_sha256": "e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c",
-      "image_sha256": "461a72b1f7264442bbc4f96c2a78547bb0b51bd4ac5628d5df1fb8f1467a2da1",
-      "description_sha256": "1b2087b58ed32644a157deace49a98b756381db1f57c481fff5c52cd58ff3cb9"
+      "source_sha256": "bb599aae060663186eff79747cf7ba5a7b603b9356442766413fd90fcac35c7f",
+      "image_sha256": "2e45fa6f5fd34401c92539761f4af166628fed6fea56e1945e547485e1bb3b56",
+      "description_sha256": "166f4dbdbdeb66e5f266750d739bdf4464b7a7ea618c954b7573bce3f3192502"
     },
     {
       "source": "Docs/Correction_Models/FABIAN_HATO0_ToneTrace.ttm",

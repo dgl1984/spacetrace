@@ -1,13 +1,13 @@
 Correction plot audit — IRCAM LISTEN 1050 — Stereo Pair left correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
-Strongest boost in plotted range: +24.42 dB at approximately 20000 Hz
-Deepest cut in plotted range: -7.07 dB at approximately 3579 Hz
+Strongest boost in plotted range: +26.52 dB at approximately 20000 Hz
+Deepest cut in plotted range: -8.76 dB at approximately 3638 Hz
 Broad-band means:
-- low bass / low mids (80-250 Hz): mean +7.64 dB
-- low mids / mids (250-1000 Hz): mean +1.94 dB
-- mids / presence (1000-4000 Hz): mean -1.34 dB
-- upper mids / treble (4000-16000 Hz): mean +6.51 dB
+- low bass / low mids (80-250 Hz): mean +5.71 dB
+- low mids / mids (250-1000 Hz): mean +4.49 dB
+- mids / presence (1000-4000 Hz): mean -1.90 dB
+- upper mids / treble (4000-16000 Hz): mean +6.01 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
 Source file: Heads/IRCAM_1050/stereo_pair_left_correction.wav
-Source SHA-256: 5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1
+Source SHA-256: d82e500be6f3b5aa03e78a732b2502e6ab4de98cf94a8776ba9b9b77e8d96f7d

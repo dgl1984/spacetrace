@@ -1,13 +1,13 @@
 Correction plot audit — FABIAN HATO 0 — Stereo Pair left correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
-Strongest boost in plotted range: +19.71 dB at approximately 20000 Hz
-Deepest cut in plotted range: -6.86 dB at approximately 5194 Hz
+Strongest boost in plotted range: +21.78 dB at approximately 20000 Hz
+Deepest cut in plotted range: -7.98 dB at approximately 5122 Hz
 Broad-band means:
-- low bass / low mids (80-250 Hz): mean +6.09 dB
-- low mids / mids (250-1000 Hz): mean +3.00 dB
-- mids / presence (1000-4000 Hz): mean -0.71 dB
-- upper mids / treble (4000-16000 Hz): mean +1.36 dB
+- low bass / low mids (80-250 Hz): mean +4.04 dB
+- low mids / mids (250-1000 Hz): mean +6.05 dB
+- mids / presence (1000-4000 Hz): mean -1.14 dB
+- upper mids / treble (4000-16000 Hz): mean +0.66 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
 Source file: Heads/FABIAN_HATO0/stereo_pair_left_correction.wav
-Source SHA-256: 29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3
+Source SHA-256: 934e0188f7e1dbd26c2545ccaf075a1be516c34c429616ea22d4e967e92d5960

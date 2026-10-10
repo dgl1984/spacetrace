@@ -294,7 +294,7 @@ python scripts/plot_correction.py Heads/FABIAN_HATO0/stereo_pair_left_correction
 
 The tool produces a response image and a matching text description reporting boost, cut, and broad frequency-band averages. Use the graph to explore the curve and the text to compare its measured values. A correction plot describes the filter itself; the head response and separate runtime gains also contribute to the sound.
 
-The bundled [Stereo Pair plots](Correction_Plots/StereoPair/) show the earlier correction revision. The command above plots the current WAV and records its source hash in the text description.
+The bundled [Stereo Pair plots](Correction_Plots/StereoPair/) show the final correction WAVs for all five heads, including the added correction stage and tail fade. Each text description records its source file and SHA-256 hash. All plots use the same frequency and gain scales so you can compare the curves directly.
 
 The retained [Tone Trace models](Correction_Models/) show earlier stages of the correction design. The final WAV includes the combined filters and tail fade.
 

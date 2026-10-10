@@ -1,13 +1,13 @@
 Correction plot audit — MIT KEMAR Normal Pinna — Stereo Pair right correction IR
 Source type: correction WAV frequency response
 Plotted range: 20-20000 Hz (log-frequency axis)
-Strongest boost in plotted range: +27.80 dB at approximately 41 Hz
-Deepest cut in plotted range: -11.21 dB at approximately 35 Hz
+Strongest boost in plotted range: +24.44 dB at approximately 42 Hz
+Deepest cut in plotted range: -15.00 dB at approximately 34 Hz
 Broad-band means:
-- low bass / low mids (80-250 Hz): mean +13.39 dB
-- low mids / mids (250-1000 Hz): mean +8.45 dB
-- mids / presence (1000-4000 Hz): mean -2.24 dB
-- upper mids / treble (4000-16000 Hz): mean +2.29 dB
+- low bass / low mids (80-250 Hz): mean +11.13 dB
+- low mids / mids (250-1000 Hz): mean +11.04 dB
+- mids / presence (1000-4000 Hz): mean -2.49 dB
+- upper mids / treble (4000-16000 Hz): mean +1.91 dB
 Interpretation note: this description reports the plotted correction data only. It does not infer perceptual quality, localization quality, or head-to-head loudness matching.
 Source file: Heads/MIT_KEMAR_Normal/stereo_pair_right_correction.wav
-Source SHA-256: 24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df
+Source SHA-256: cfdcd48d7060af0f11982a68b1b57cb85a167740378feebacf1fc463d48d86ed
