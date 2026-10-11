@@ -1,6 +1,6 @@
 # SpaceTrace — Put a sound somewhere
 
-Move a voice around the listener, lift an effect above them, or turn the angle of a stereo field recording within a soundscape. SpaceTrace is a binaural spatializer for headphone listening, available as a Windows x64 VST3 and CLAP plug-in.
+Move a voice around the listener, lift an effect above them, or turn the angle of a stereo field recording within a soundscape. SpaceTrace is a binaural spatializer for headphone listening, available as a Windows x64 VST3 and CLAP plug-in and a macOS Audio Unit, VST3 and CLAP plug-in.
 
 It uses measurements of how sound reaches the ears from different directions to give each placement its timing, level, and tonal cues. Five heads offer different sets of those cues. Their prepared EQ and level calibration make it easier to compare the placement and movement you hear.
 
@@ -8,11 +8,19 @@ It uses measurements of how sound reaches the ears from different directions to 
 
 ## Install
 
+### Windows
+
 1. Download **SpaceTrace_1.0.1_Windows_x64.zip** from the release page and extract it.
 2. Place the complete `SpaceTrace` folder in a plug-in location scanned by your DAW. Its plug-in settings or installation guide will show which locations it uses. Keep the accompanying folders together: `Heads/` contains the head models, corrections, and calibration settings.
 3. Scan for new plug-ins, then insert **SpaceTrace** on an audio track. Choose VST3 or CLAP according to your DAW's support; both provide the same controls and sound.
 
-When updating, replace the accompanying folders along with the plug-ins. The manual explains [installation](Docs/MANUAL.md#install-spacetrace) and [keeping the head data used by an earlier project](Docs/MANUAL.md#updates-and-project-recall).
+### macOS
+
+1. Download **SpaceTrace_1.0.1_macOS_Universal.dmg** from the release page and open it. It runs on Apple silicon and Intel Macs with macOS 12 or later.
+2. Open **Install SpaceTrace.pkg**. If macOS cannot verify the developer, choose Open Anyway in System Settings > Privacy & Security, then follow the installer. It installs the Audio Unit, VST3 and CLAP plug-ins; each carries its own heads, so deleting a plug-in uninstalls it. The disk image also holds the manual, custom-head tools and licences.
+3. Rescan plug-ins, then insert **SpaceTrace** on an audio track. Logic Pro and GarageBand use the Audio Unit.
+
+When updating on Windows, replace the accompanying folders along with the plug-ins; on macOS, run the new installer. The manual explains [installation](Docs/MANUAL.md#install-spacetrace) and [keeping the head data used by an earlier project](Docs/MANUAL.md#updates-and-project-recall).
 
 ## Try a moving sound
 

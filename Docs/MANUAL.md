@@ -6,7 +6,7 @@ Each of the five heads is a set of measurements describing how sound reaches the
 
 ## Contents
 
-- [Install SpaceTrace](#install-spacetrace) — download, extract, and load the plug-in in your DAW.
+- [Install SpaceTrace](#install-spacetrace) — download, install, and load the plug-in in your DAW on Windows or macOS.
 - [Hear your first moving sound](#hear-your-first-moving-sound) — start here if binaural audio is new to you.
 - [Find a head that works for you](#find-a-head-that-works-for-you) — compare the five datasets.
 - [Change the angle of a stereo recording](#change-the-angle-of-a-stereo-recording) — explore Stereo Pair and Width Offset.
@@ -21,7 +21,11 @@ Each of the five heads is a set of measurements describing how sound reaches the
 
 ## Install SpaceTrace
 
-The Windows release includes VST3 and CLAP versions of the plug-in. Both use the same processor and head data, so choose the format your DAW supports.
+SpaceTrace is available for Windows and macOS. Every format uses the same processor and head data, so choose the format your DAW supports.
+
+### Windows
+
+The Windows release includes VST3 and CLAP versions of the plug-in.
 
 1. Download **SpaceTrace_1.0.1_Windows_x64.zip** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest).
 2. Extract the ZIP. Inside is a `SpaceTrace` folder containing the plug-ins and their accompanying files.
@@ -43,6 +47,29 @@ SpaceTrace/
 ```
 
 `Docs/` contains this manual and the preparation guides. The tools in `scripts/` are for creating and analysing head data; see [custom-head preparation](#make-or-refine-a-custom-head) to use them.
+
+### macOS
+
+The macOS release is a disk image containing an installer for the Audio Unit, VST3 and CLAP versions of the plug-in. It runs natively on Apple silicon and Intel Macs with macOS 12 or later. Logic Pro and GarageBand use the Audio Unit; REAPER, Ableton Live and Bitwig Studio can use VST3 or CLAP.
+
+1. Download **SpaceTrace_1.0.1_macOS_Universal.dmg** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest) and open it.
+2. Open **Install SpaceTrace.pkg**. If macOS reports that it cannot verify the developer, open System Settings > Privacy & Security, find the message about SpaceTrace, and choose Open Anyway. This happens when a release is not notarized by Apple.
+3. Follow the installer. Choose Customize to leave out formats you do not need.
+4. Rescan plug-ins in your DAW, then insert **SpaceTrace** on an audio track.
+
+The installer places each plug-in in the shared folder for its format and installs nothing else:
+
+```text
+/Library/Audio/Plug-Ins/Components/SpaceTrace.component
+/Library/Audio/Plug-Ins/VST3/SpaceTrace.vst3
+/Library/Audio/Plug-Ins/CLAP/SpaceTrace.clap
+```
+
+Each plug-in carries its own copy of the five heads, their corrections and calibration settings, and the licences. To uninstall a format, delete its plug-in from the folder above.
+
+The disk image also contains this manual and the other guides in `Docs/`, the custom-head tools in `scripts/`, and the licences. Copy them wherever you like; SpaceTrace does not need them to run.
+
+To use different head data, for example to keep the heads used by earlier projects through an update, create `~/Library/Application Support/LanesAudio/SpaceTrace/Heads` and place a complete set of head folders in it. While that folder exists, every SpaceTrace format uses it instead of the heads inside the plug-in. You can find the supplied heads by choosing Show Package Contents on an installed plug-in and opening `Contents/Resources/Heads`.
 
 ## Hear your first moving sound
 
@@ -224,6 +251,8 @@ These shortcuts help you move between controls and make fine adjustments. Tab an
 
 After exact entry, focus returns to the slider.
 
+On a Mac keyboard without Home, End, Page Up and Page Down keys, use Fn+Left Arrow for Home, Fn+Right Arrow for End, Fn+Up Arrow for Page Up and Fn+Down Arrow for Page Down. On a laptop, F2 may also need Fn. With VoiceOver, interact with the plug-in window (VO+Shift+Down Arrow) so these keys reach SpaceTrace.
+
 ### Automate the movement
 
 Azimuth, Elevation, Distance, Input Mode, Width Offset, Air Loss, Output, and Bypass are host parameters. You can also reach these through the host's generic parameter view.
@@ -310,7 +339,7 @@ The historical implementation is documented in the source repository's [Papa Pan
 
 ## Updates and project recall
 
-To update, close the host, replace the package files, and reopen it to load the new data.
+To update, close the host, replace the package files, and reopen it to load the new data. On macOS, run the new installer; it replaces each plug-in together with the heads inside it.
 
 ### What a project remembers
 
@@ -335,7 +364,7 @@ For exact recall of an older sound, keep the corresponding head package with you
 | A typed value is rejected | Enter a number within the range shown in the error message. The previous setting is kept until a valid value is entered. |
 | A custom head plays in Raw when Dataset Corrected is selected | Read the status message and confirm that the head package includes its correction file. A package with no correction uses Raw. |
 
-To [report a problem](https://github.com/dgl1984/spacetrace/issues), include the host and version, VST3 or CLAP, operating system, sample rate, and block size. Give the Renderer, Head, Input Mode, Tone, position, Width Offset, and Output settings, along with a short sequence that reproduces it.
+To [report a problem](https://github.com/dgl1984/spacetrace/issues), include the host and version, VST3, CLAP or Audio Unit, operating system, sample rate, and block size. Give the Renderer, Head, Input Mode, Tone, position, Width Offset, and Output settings, along with a short sequence that reproduces it.
 
 For a shutdown problem, say whether you removed the plug-in, deleted its track, closed the project, or exited the host, and whether playback and the editor were active. Those details identify different processing paths.
 

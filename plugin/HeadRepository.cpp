@@ -72,7 +72,21 @@ juce::File HeadRepository::locateHeadsDirectory() {
         if (f.isDirectory()) return f;
     }
 
-    auto base = juce::File::getSpecialLocation(juce::File::currentExecutableFile).getParentDirectory();
+    const auto executable = juce::File::getSpecialLocation(juce::File::currentExecutableFile);
+
+#if JUCE_MAC
+    // Each macOS plug-in bundle carries its own Heads in Contents/Resources, so
+    // deleting the bundle uninstalls everything. A user-created folder replaces
+    // the bundled heads, for example to keep an older set for project recall.
+    const auto userHeads = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+                               .getChildFile("Application Support/LanesAudio/SpaceTrace/Heads");
+    if (userHeads.isDirectory()) return userHeads;
+
+    const auto bundledHeads = executable.getParentDirectory().getSiblingFile("Resources").getChildFile("Heads");
+    if (bundledHeads.isDirectory()) return bundledHeads;
+#endif
+
+    auto base = executable.getParentDirectory();
     for (int depth = 0; depth < 8 && base != juce::File(); ++depth) {
         const auto candidate = base.getChildFile("Heads");
         if (candidate.isDirectory()) return candidate;
@@ -107,7 +121,11 @@ juce::String HeadRepository::sha256File(const juce::File& file, juce::String& er
 bool HeadRepository::readManifest(BuiltInDatasetId id, Manifest& out, juce::String& error) const {
     const auto root = locateHeadsDirectory();
     if (!root.isDirectory()) {
+#if JUCE_MAC
+        error = "SpaceTrace Heads folder was not found inside the plug-in bundle. Reinstall SpaceTrace.";
+#else
         error = "SpaceTrace Heads folder was not found beside the portable plug-in folder.";
+#endif
         return false;
     }
 

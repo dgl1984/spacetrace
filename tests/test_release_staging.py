@@ -4,6 +4,7 @@ import importlib.util
 import tempfile
 import contextlib
 import io
+import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("stage_release", ROOT / "scripts" / "stage_release.py")
@@ -43,6 +44,43 @@ with tempfile.TemporaryDirectory(prefix="spacetrace-release-test-") as td:
         if leaked.parent.name == ".codex":
             leaked.parent.rmdir()
     MOD.validate_public_tree(out)
+
+# macOS staging adds the AU bundle and places heads and licences inside every bundle.
+with tempfile.TemporaryDirectory(prefix="spacetrace-release-macos-test-") as td:
+    td = Path(td)
+    vst3 = td / "fake.vst3"; (vst3 / "Contents" / "MacOS").mkdir(parents=True)
+    clap = td / "fake.clap"; (clap / "Contents" / "MacOS").mkdir(parents=True)
+    au = td / "fake.component"; (au / "Contents" / "MacOS").mkdir(parents=True)
+    for bundle in (vst3, clap, au):
+        (bundle / "Contents" / "MacOS" / "SpaceTrace").write_bytes(b"bundle")
+    out = td / "portable" / "SpaceTrace"
+    MOD.stage(ROOT, vst3, clap, out, au=au)
+    MOD.validate_public_tree(out, au=True)
+    assert not (out / "Heads").exists()
+    for bundle in MOD.MACOS_BUNDLES:
+        resources = out / bundle / "Contents" / "Resources"
+        assert (out / bundle / "Contents" / "MacOS" / "SpaceTrace").is_file()
+        assert (resources / "Heads" / "IRCAM_1050" / "manifest.json").is_file()
+        assert (resources / "Licenses" / "THIRD_PARTY_NOTICES.txt").is_file()
+        assert (resources / "LICENSE.txt").is_file()
+    # A bundle missing a head must be rejected.
+    removed = out / "SpaceTrace.clap" / "Contents" / "Resources" / "Heads" / "FABIAN_HATO0"
+    shutil.rmtree(removed)
+    try:
+        with contextlib.redirect_stderr(io.StringIO()):
+            MOD.validate_public_tree(out, au=True)
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("bundle with an incomplete head set accepted")
+    shutil.copytree(ROOT / "Heads" / "FABIAN_HATO0", removed)
+    try:
+        with contextlib.redirect_stderr(io.StringIO()):
+            MOD.validate_public_tree(out)
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("AU bundle accepted in a Windows release tree")
 
 # Path-safety regression checks for the Windows portable staging location.
 with tempfile.TemporaryDirectory(prefix="spacetrace-release-path-test-") as td:

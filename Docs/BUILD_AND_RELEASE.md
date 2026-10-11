@@ -1,6 +1,6 @@
 # SpaceTrace Build and Release Notes
 
-SpaceTrace's VST3 and CLAP must be built from the same `SpaceTrace` JUCE target. Format-specific DSP/editor forks are not permitted.
+SpaceTrace's VST3, CLAP and Audio Unit must be built from the same `SpaceTrace` JUCE target. Format-specific or platform-specific DSP/editor forks are not permitted.
 
 ## Windows prerequisites
 
@@ -30,6 +30,56 @@ The build must:
 8. stage only the explicit public whitelist (`Heads/`, user/reproducibility `Docs/`, `Licenses/`, user custom-head `scripts/`, README and first-party LICENSE);
 9. validate that no internal audit/handoff/build/source artifacts leaked into the portable tree;
 10. install nothing automatically.
+
+## macOS prerequisites
+
+- macOS 12 or later with Xcode (or its command-line tools)
+- CMake 3.22 or later
+- Python 3.12 (preferred; `h5py` may have no wheel for the newest Python). Set `SPACETRACE_PYTHON` to choose another interpreter.
+- Internet access only when pinned JUCE or CLAP wrapper dependencies are not already present
+
+Run:
+
+```text
+./BUILD_MACOS.sh
+```
+
+The script creates `.venv/` for the head-tool Python dependencies and restores the pinned dependencies with `scripts/fetch_deps.py`. That script uses the same CLAP revisions and archive hashes as `FETCH_CLAP_WINDOWS.ps1`, and the JUCE 8.0.12 source archive for tag commit `29396c22c93392d6738e021b83196283d6e4d850`. It then follows the Windows steps above, with these differences:
+
+1. the build is universal (`arm64;x86_64`) with a macOS 12.0 deployment target;
+2. it also builds `SpaceTrace.component` (Audio Unit) from the same target, which Logic Pro and GarageBand require;
+3. the CLAP binary test loads the `.clap` bundle with `dlopen`;
+4. it does not prepare the KU100 package; a missing or stale package stops the build with instructions;
+5. staging copies `Heads/`, `Licenses/` and `LICENSE.txt` into `Contents/Resources` of every bundle instead of the release root, and validates each copy;
+6. `scripts/package_macos.py` signs the staged bundles and builds `SpaceTrace_<version>_macOS_Universal.dmg` and `SHA256SUMS.txt` in `build-macos/release/`.
+
+The disk image contains `Install SpaceTrace.pkg`, `Docs/`, `scripts/`, `Licenses/`, `README.md` and `LICENSE.txt`. The installer has one optional package per plug-in format, installed to `/Library/Audio/Plug-Ins/{Components,VST3,CLAP}`, and installs nothing else, so deleting a bundle uninstalls that format. Bundle relocation is disabled so upgrades never land in a build folder. The Audio Unit package restarts `AudioComponentRegistrar` so hosts see the new component.
+
+On macOS the plug-in looks for heads in this order: `SPACETRACE_HEADS_DIR`; `~/Library/Application Support/LanesAudio/SpaceTrace/Heads`, which users create only to replace the supplied heads; the bundle's own `Contents/Resources/Heads`; then the shared search beside the plug-in used by development builds. Because the heads sit inside the signed bundle, the code signature covers them.
+
+### Signing and notarization
+
+Without configuration, bundles are signed ad hoc and the package is unsigned. That runs on Apple silicon, but Gatekeeper blocks the downloaded package until the user chooses Open Anyway in System Settings > Privacy & Security. Apple offers no free signing for open-source projects; a Developer ID requires Apple Developer Program membership. With one, set:
+
+```text
+SPACETRACE_CODESIGN_IDENTITY="Developer ID Application: <name> (<team>)"
+SPACETRACE_INSTALLER_IDENTITY="Developer ID Installer: <name> (<team>)"
+SPACETRACE_NOTARY_PROFILE=<profile created with xcrun notarytool store-credentials>
+```
+
+Bundles are then signed with the hardened runtime and a secure timestamp; the installer is signed, notarized and stapled; and the disk image is signed, notarized and stapled.
+
+### macOS release gates
+
+In addition to the shared gates below, test:
+
+- `auval -v aufx SpTr LnAu` passes after installing;
+- Audio Unit, VST3 and CLAP instantiate in Logic Pro, REAPER and Ableton Live, on Apple silicon and, where available, an Intel Mac;
+- VoiceOver traversal, interaction and exact entry, including the Fn+arrow equivalents of Home/End and Page Up/Page Down;
+- the installer's Customize choices, upgrade over an earlier install, deleting a bundle as uninstallation, and the per-user `Heads` replacement folder;
+- Retina and non-Retina displays.
+
+## Visual snapshots
 
 For the developer visual validation pass, run separately:
 
@@ -98,6 +148,6 @@ checks their source and output hashes without requiring plotting dependencies.
 Review new documentation for private discussion or development notes; automated
 checks catch known filenames and handoff headings but cannot replace that review.
 
-Release assets consist of the Windows package and its `SHA256SUMS.txt` file.
+Release assets consist of the Windows package, the macOS disk image, and a `SHA256SUMS.txt` file covering both.
 Source is available from the repository; do not upload a second source ZIP.
 The release tag must identify the source and head assets used for that release.
