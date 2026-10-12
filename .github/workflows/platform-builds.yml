@@ -1,0 +1,50 @@
+name: Platform builds
+
+on:
+  push:
+    branches: [main, integrate-macos-pr1]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build, test, and package universal macOS plug-ins
+        run: bash BUILD_MACOS.sh
+      - name: Verify universal binaries and bundled head discovery
+        run: |
+          root="$PWD"
+          for bundle in SpaceTrace.component SpaceTrace.vst3 SpaceTrace.clap; do
+            lipo -verify_arch arm64 x86_64 "$root/build-macos/portable/SpaceTrace/$bundle/Contents/MacOS/SpaceTrace"
+          done
+          cd "$RUNNER_TEMP"
+          env -u SPACETRACE_HEADS_DIR "$root/build-macos/spacetrace_clap_tests" "$root/build-macos/portable/SpaceTrace/SpaceTrace.clap"
+      - name: Validate the Audio Unit
+        run: |
+          mkdir -p "$HOME/Library/Audio/Plug-Ins/Components"
+          ditto build-macos/portable/SpaceTrace/SpaceTrace.component "$HOME/Library/Audio/Plug-Ins/Components/SpaceTrace.component"
+          killall AudioComponentRegistrar || true
+          auval -v aufx SpTr LnAu
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SpaceTrace-macOS-Universal
+          path: build-macos/release/*
+          if-no-files-found: error
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macOS-validation-logs
+          path: |
+            BUILD_MACOS_LOG.txt
+            build-macos/Testing/Temporary/LastTest.log
+          retention-days: 7

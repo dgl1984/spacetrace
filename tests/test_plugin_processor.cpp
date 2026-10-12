@@ -68,7 +68,7 @@ float maxAbs(const juce::AudioBuffer<float>& b) {
 int main() {
     juce::ScopedJuceInitialiser_GUI juceInitialiser;
     try {
-        // Use the production minimum-phase rate converter on the approved direct
+        // Use the production minimum-phase rate converter on the approved composed
         // WAVs. Compare physical-frequency response with the stored 48 kHz IRs.
         {
             const auto heads = juce::File(juce::SystemStats::getEnvironmentVariable("SPACETRACE_HEADS_DIR", ""));
@@ -99,11 +99,16 @@ int main() {
                         const auto converted = spacetrace::resampleCompensation(original, rate);
                         require(converted.impulse.size() >= static_cast<std::size_t>((original.impulse.size() - 1) * rate / original.sampleRate),
                                 "rate conversion truncated the direct correction tail");
-                        for (int step = 0; step <= 48; ++step) {
-                            const double hz = 20.0 * std::pow(1000.0, step / 48.0);
+                        // Include the narrow low-frequency features in the composed
+                        // corrections, which a sparse 49-point sweep can miss.
+                        for (int step = 0; step <= 192; ++step) {
+                            const double hz = 20.0 * std::pow(1000.0, step / 192.0);
                             const double delta = std::abs(20.0 * std::log10(magnitude(converted, hz) / magnitude(original, hz)));
-                            require(std::isfinite(delta) && delta < 0.05,
-                                    "direct correction response changed during host-rate conversion");
+                            if (!std::isfinite(delta) || delta >= 0.05) {
+                                std::cerr << folder << " " << side << " at " << rate
+                                          << " Hz, frequency " << hz << ": " << delta << " dB\n";
+                                throw std::runtime_error("correction response changed during host-rate conversion");
+                            }
                             worstDb = std::max(worstDb, delta);
                         }
                     }

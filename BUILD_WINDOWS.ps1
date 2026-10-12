@@ -80,7 +80,7 @@ try {
 
     Write-Host '=== Build tests and processor integration ==='
     & cmake --build $Build --config Release --target `
-        spacetrace_core_tests spacetrace_dataset_tests spacetrace_plugin_tests spacetrace_clap_tests | Out-Host
+        spacetrace_core_tests spacetrace_dataset_tests spacetrace_plugin_tests spacetrace_mono_level_tests spacetrace_clap_tests | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "Test build failed with exit code $LASTEXITCODE" }
 
     Write-Host '=== Run tests ==='

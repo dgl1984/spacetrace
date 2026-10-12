@@ -54,6 +54,10 @@ Load a correction WAV to shape the tone, or prepare a custom head from compatibl
 
 [Tone Trace](https://github.com/dgl1984/ToneTrace) is the separate frequency-response comparison and correction-design tool used to prepare the supplied heads.
 
+## Contributors
+
+The macOS port was contributed by [Victor Tsaran (@vick08)](https://github.com/vick08), adding native Apple silicon and Intel support with Audio Unit, VST3, and CLAP builds. [See his contribution](https://github.com/dgl1984/spacetrace/pull/1).
+
 ## Licence
 
 SpaceTrace's first-party material uses Apache License 2.0 with the Commons Clause License Condition v1.0; see [LICENSE.txt](LICENSE.txt). The bundled datasets and dependencies carry their own terms in the [third-party notices](Licenses/THIRD_PARTY_NOTICES.txt). Each head also includes its source, processing history, and licence records.

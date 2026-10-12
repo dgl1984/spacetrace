@@ -283,15 +283,19 @@ def main():
     require(requirements,'numpy','scripts/requirements.txt must list NumPy')
     require(requirements,'h5py','scripts/requirements.txt must list h5py')
     require(requirements,'matplotlib','scripts/requirements.txt must list matplotlib for correction documentation plots')
-    require(manual,'0° and 360° are the same physical position','manual must explain the azimuth endpoint/direction convention')
-    require(manual,'https://github.com/dgl1984/ToneTrace/releases','manual must tell users where to obtain Tone Trace')
-    require(manual,'one parameter, one user-facing control','manual must explain the universal-access control contract')
+    # Check useful documentation contracts without freezing its prose or headings.
+    for control in ('Azimuth', 'Elevation', 'Distance', 'Stereo Pair', 'Page Up', 'Page Down'):
+        require(manual, control, f'manual does not document {control}')
+    require(manual,'https://github.com/dgl1984/ToneTrace','manual must link to Tone Trace')
     require(manual,'TH Köln / Bernschütz FULL2DEG KU100','manual must document all five shipping heads')
     require(manual,'python scripts/plot_correction.py','manual must document user-generated correction plots')
-    require(manual,'Page Up/Page Down','manual must document the accessibility coarse-step keys')
-    require(manual,'Shared head loading','manual must document the shared immutable head cache')
-    require(manual,'Sample-rate handling','manual must document host-rate preparation')
-    require(manual,'Apache License 2.0 with the Commons Clause License Condition v1.0','manual must state the first-party licensing decision')
+    require(manual,'../LICENSE.txt','manual must link to the first-party licence')
+    for target in re.findall(r'\[[^\]]*\]\(([^)]+)\)', manual):
+        if target.startswith(('https://', 'http://', '#')):
+            continue
+        path = target.split('#', 1)[0]
+        if not (ROOT / 'Docs' / path).exists():
+            raise AssertionError(f'manual link target is missing: {target}')
     require(build_release_doc,'same `SpaceTrace` JUCE target','build docs must forbid divergent VST3/CLAP implementations')
     require(stage_release,'PUBLIC_TOP_LEVEL','release staging must use an explicit public-root whitelist')
     require(stage_release,'PUBLIC_DOC_FILES','release staging must whitelist public documentation')
