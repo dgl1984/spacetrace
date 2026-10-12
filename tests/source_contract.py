@@ -62,7 +62,7 @@ def main():
     build_mac=read('BUILD_MACOS.sh') if (ROOT/'BUILD_MACOS.sh').exists() else ''
     fetch_deps=read('scripts/fetch_deps.py') if (ROOT/'scripts/fetch_deps.py').exists() else ''
 
-    require(cmake,'project(SpaceTrace VERSION 1.0.1','1.0.1 project identity missing')
+    require(cmake,'project(SpaceTrace VERSION 1.0.2','1.0.2 project identity missing')
     require(cmake,'PRODUCT_NAME "SpaceTrace"','SpaceTrace product identity missing')
     require(cmake,'FORMATS VST3 Standalone','VST3/Standalone JUCE target missing')
     require(cmake,'clap_juce_extensions_plugin(TARGET SpaceTrace','CLAP wrapper must target the same SpaceTrace JUCE target')
@@ -484,7 +484,7 @@ def main():
     require(editor, 'setResizeLimits(820, 648, 1280, 920)',
             'Minimum editor height must preserve Bypass/Status with exact-entry error visible')
 
-    print('PASS: SpaceTrace 1.0.1 stereo-pair-width source contract')
+    print('PASS: SpaceTrace 1.0.2 stereo-pair-width source contract')
     return 0
 
 if __name__=='__main__':

@@ -1,4 +1,4 @@
-# SpaceTrace 1.0.1 — Put a sound somewhere
+# SpaceTrace 1.0.2 — Put a sound somewhere
 
 SpaceTrace lets you place sounds around you through headphones. Move a voice to one side, lift a sound above you, or listen to a stereo recording as if it were captured from a different angle.
 
@@ -27,7 +27,7 @@ SpaceTrace is available for Windows and macOS. Every format uses the same proces
 
 The Windows release includes VST3 and CLAP versions of the plug-in.
 
-1. Download **SpaceTrace_1.0.1_Windows_x64.zip** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest).
+1. Download **SpaceTrace_1.0.2_Windows_x64.zip** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest).
 2. Extract the ZIP. Inside is a `SpaceTrace` folder containing the plug-ins and their accompanying files.
 3. Place the complete folder in a plug-in location scanned by your DAW. Its plug-in settings or installation guide will show which locations it uses. Keep `Heads/` with the plug-ins: it contains the five head models, correction filters, and calibration settings.
 4. Scan for new plug-ins in your DAW, then insert **SpaceTrace** on an audio track.
@@ -52,7 +52,7 @@ SpaceTrace/
 
 The macOS release is a disk image containing an installer for the Audio Unit, VST3 and CLAP versions of the plug-in. It runs natively on Apple silicon and Intel Macs with macOS 12 or later. Logic Pro and GarageBand use the Audio Unit; REAPER, Ableton Live and Bitwig Studio can use VST3 or CLAP.
 
-1. Download **SpaceTrace_1.0.1_macOS_Universal.dmg** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest) and open it.
+1. Download **SpaceTrace_1.0.2_macOS_Universal.dmg** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest) and open it.
 2. Open **Install SpaceTrace.pkg**. If macOS reports that it cannot verify the developer, open System Settings > Privacy & Security, find the message about SpaceTrace, and choose Open Anyway. This happens when a release is not notarized by Apple.
 3. Follow the installer. Choose Customize to leave out formats you do not need.
 4. Rescan plug-ins in your DAW, then insert **SpaceTrace** on an audio track.
