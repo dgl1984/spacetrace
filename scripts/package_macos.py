@@ -100,7 +100,11 @@ def distribution_xml(version: str, packages: list[tuple[str, str, str]]) -> str:
         '    <license file="LICENSE.txt"/>',
         '    <options customize="allow" require-scripts="false" hostArchitectures="arm64,x86_64"/>',
         '    <domains enable_localSystem="true"/>',
-        f'    <os-version min="{MINIMUM_MACOS}"/>',
+        '    <volume-check script="true">',
+        '        <allowed-os-versions>',
+        f'            <os-version min="{MINIMUM_MACOS}"/>',
+        '        </allowed-os-versions>',
+        '    </volume-check>',
         '    <choices-outline>',
     ]
     lines += [f'        <line choice="{identifier}"/>' for identifier, _, _ in packages]

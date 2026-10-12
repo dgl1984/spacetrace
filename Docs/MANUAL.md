@@ -50,7 +50,7 @@ SpaceTrace/
 
 ### macOS
 
-The macOS release is a disk image containing an installer for the Audio Unit, VST3 and CLAP versions of the plug-in. It runs natively on Apple silicon and Intel Macs with macOS 12 or later. Logic Pro and GarageBand use the Audio Unit; REAPER, Ableton Live and Bitwig Studio can use VST3 or CLAP.
+The macOS release is a disk image containing an installer for the Audio Unit, VST3 and CLAP versions of the plug-in. It runs natively on Apple silicon and Intel Macs with macOS 12 or later. Logic Pro and GarageBand use the Audio Unit; for other DAWs, choose a format they support.
 
 1. Download **SpaceTrace_1.0.2_macOS_Universal.dmg** from the [SpaceTrace release page](https://github.com/dgl1984/spacetrace/releases/latest) and open it.
 2. Open **Install SpaceTrace.pkg**. If macOS reports that it cannot verify the developer, open System Settings > Privacy & Security, find the message about SpaceTrace, and choose Open Anyway. This happens when a release is not notarized by Apple.

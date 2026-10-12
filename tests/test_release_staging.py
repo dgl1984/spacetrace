@@ -5,10 +5,26 @@ import tempfile
 import contextlib
 import io
 import shutil
+import sys
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("stage_release", ROOT / "scripts" / "stage_release.py")
 MOD = importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(MOD)
+
+sys.path.insert(0, str(ROOT / "scripts"))
+from package_macos import distribution_xml
+
+# The minimum OS requirement must be inside Apple's volume-check schema;
+# an os-version element directly under the root does not enforce it.
+packages = [(f"com.lanesaudio.spacetrace.{ext}", f"SpaceTrace-{ext}.pkg", title)
+            for ext, title in (("vst3", "VST3"), ("clap", "CLAP"), ("component", "Audio Unit"))]
+distribution = ET.fromstring(distribution_xml("1.0.2", packages))
+assert distribution.find("volume-check/allowed-os-versions/os-version").get("min") == "12.0"
+assert distribution.find("os-version") is None
+assert distribution.find("options").get("customize") == "allow"
+assert len(distribution.findall("choices-outline/line")) == 3
+assert {node.text for node in distribution.findall("pkg-ref")} == {p[1] for p in packages}
 
 with tempfile.TemporaryDirectory(prefix="spacetrace-release-test-") as td:
     td = Path(td)

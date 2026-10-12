@@ -26,8 +26,9 @@ jobs:
           for bundle in SpaceTrace.component SpaceTrace.vst3 SpaceTrace.clap; do
             lipo -verify_arch arm64 x86_64 "$root/build-macos/portable/SpaceTrace/$bundle/Contents/MacOS/SpaceTrace"
           done
+          ditto "$root/build-macos/portable/SpaceTrace/SpaceTrace.clap" "$RUNNER_TEMP/SpaceTrace.clap"
           cd "$RUNNER_TEMP"
-          env -u SPACETRACE_HEADS_DIR "$root/build-macos/spacetrace_clap_tests" "$root/build-macos/portable/SpaceTrace/SpaceTrace.clap"
+          env -u SPACETRACE_HEADS_DIR "$root/build-macos/spacetrace_clap_tests" "$RUNNER_TEMP/SpaceTrace.clap"
       - name: Validate the Audio Unit
         run: |
           mkdir -p "$HOME/Library/Audio/Plug-Ins/Components"
