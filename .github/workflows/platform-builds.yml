@@ -1,0 +1,69 @@
+name: Platform builds
+
+on:
+  push:
+    branches: [main, integrate-macos-pr1]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build, test, and package universal macOS plug-ins
+        run: bash BUILD_MACOS.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SpaceTrace-macOS-Universal
+          path: build-macos/release/*
+          if-no-files-found: error
+          retention-days: 7
+      - name: Verify universal binaries and bundled head discovery
+        run: |
+          root="$PWD"
+          for bundle in SpaceTrace.component SpaceTrace.vst3 SpaceTrace.clap; do
+            lipo "$root/build-macos/portable/SpaceTrace/$bundle/Contents/MacOS/SpaceTrace" -verify_arch arm64 x86_64
+          done
+          ditto "$root/build-macos/portable/SpaceTrace/SpaceTrace.clap" "$RUNNER_TEMP/SpaceTrace.clap"
+          cd "$RUNNER_TEMP"
+          env -u SPACETRACE_HEADS_DIR "$root/build-macos/spacetrace_clap_tests" "$RUNNER_TEMP/SpaceTrace.clap"
+      - name: Install the packaged release and validate the Audio Unit
+        run: |
+          mount="$RUNNER_TEMP/SpaceTrace-release"
+          mkdir -p "$mount"
+          hdiutil attach build-macos/release/SpaceTrace_*_macOS_Universal.dmg -mountpoint "$mount" -nobrowse
+          sudo installer -pkg "$mount/Install SpaceTrace.pkg" -target /
+          hdiutil detach "$mount"
+          component="/Library/Audio/Plug-Ins/Components/SpaceTrace.component"
+          codesign --verify --strict --deep --verbose=2 "$component"
+          /usr/libexec/PlistBuddy -c 'Print :AudioComponents' "$component/Contents/Info.plist"
+          sudo killall -9 AudioComponentRegistrar || true
+          # Registration is asynchronous on a fresh machine. Wait for discovery
+          # before running the validator; validation failures are never retried.
+          for attempt in {1..12}; do
+            auval -a > "$RUNNER_TEMP/au-components.txt"
+            if grep -E 'aufx[[:space:]]+SpTr[[:space:]]+LnAu' "$RUNNER_TEMP/au-components.txt"; then
+              break
+            fi
+            sleep 5
+          done
+          cat "$RUNNER_TEMP/au-components.txt"
+          set -o pipefail
+          auval -v aufx SpTr LnAu 2>&1 | tee AU_VALIDATION_LOG.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macOS-validation-logs
+          path: |
+            BUILD_MACOS_LOG.txt
+            AU_VALIDATION_LOG.txt
+            build-macos/Testing/Temporary/LastTest.log
+          retention-days: 7

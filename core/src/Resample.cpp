@@ -51,14 +51,15 @@ void fft(std::vector<std::complex<double>>& a, bool inverse) {
 
 std::vector<float> resampleMinimumPhaseImpulse(const std::vector<float>& input,
                                                 double sourceRate,
-                                                double targetRate) {
+                                                double targetRate,
+                                                std::size_t fftOversampling = 8u) {
     if (input.empty()) return {};
     if (std::abs(sourceRate - targetRate) < 1.0e-9) return input;
 
     const double ratio = targetRate / sourceRate;
     const std::size_t outN = static_cast<std::size_t>(std::ceil(input.size() * ratio));
-    const std::size_t sourceFftN = nextPowerOfTwo(std::max<std::size_t>(2048, input.size() * 8u));
-    const std::size_t targetFftN = nextPowerOfTwo(std::max<std::size_t>(2048, outN * 8u));
+    const std::size_t sourceFftN = nextPowerOfTwo(std::max<std::size_t>(2048, input.size() * fftOversampling));
+    const std::size_t targetFftN = nextPowerOfTwo(std::max<std::size_t>(2048, outN * fftOversampling));
 
     std::vector<std::complex<double>> sourceSpectrum(sourceFftN);
     for (std::size_t i = 0; i < input.size(); ++i) sourceSpectrum[i] = input[i];
@@ -172,7 +173,11 @@ HRTFSet resampleHRTFSet(const HRTFSet& input, double targetRate) {
 CompensationProfile resampleCompensation(const CompensationProfile& input, double targetRate) {
     if (std::abs(input.sampleRate - targetRate) < 1.0e-9) return input;
     CompensationProfile out = input;
-    out.impulse = resampleMinimumPhaseImpulse(input.impulse, input.sampleRate, targetRate);
+    // Composed correction filters can contain narrow bass notches. Resolve their
+    // log-magnitude curve finely enough before minimum-phase reconstruction;
+    // the coarser HRTF grid can reshape these notches at a different host rate.
+    // This preparation runs outside the audio callback and keeps the FIR length.
+    out.impulse = resampleMinimumPhaseImpulse(input.impulse, input.sampleRate, targetRate, 32u);
     out.sampleRate = targetRate;
     return out;
 }

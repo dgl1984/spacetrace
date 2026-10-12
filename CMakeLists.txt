@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
-project(SpaceTrace VERSION 1.0.1 LANGUAGES CXX)
+
+# macOS releases are universal and must be configured before project().
+if(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum macOS version")
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "macOS architectures")
+endif()
+
+project(SpaceTrace VERSION 1.0.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -77,10 +84,20 @@ if(SPACETRACE_BUILD_TESTS)
 endif()
 
 if(SPACETRACE_BUILD_PLUGIN)
+    # The CLAP wrapper compiles C sources with clang on macOS.
+    if(APPLE)
+        enable_language(C)
+    endif()
     if(EXISTS "${JUCE_DIR}/CMakeLists.txt")
         add_subdirectory("${JUCE_DIR}" "${CMAKE_BINARY_DIR}/JUCE" EXCLUDE_FROM_ALL)
     else()
         find_package(JUCE 8.0.12 CONFIG REQUIRED)
+    endif()
+
+    # Logic and GarageBand load only Audio Units.
+    set(SPACETRACE_APPLE_FORMATS)
+    if(APPLE)
+        set(SPACETRACE_APPLE_FORMATS AU)
     endif()
 
     # SpaceTrace 1.0 heads are external portable resources under Heads/.
@@ -91,7 +108,7 @@ if(SPACETRACE_BUILD_PLUGIN)
         BUNDLE_ID "com.lanesaudio.spacetrace"
         PLUGIN_MANUFACTURER_CODE LnAu
         PLUGIN_CODE SpTr
-        FORMATS VST3 Standalone
+        FORMATS VST3 Standalone ${SPACETRACE_APPLE_FORMATS}
         PRODUCT_NAME "SpaceTrace"
         DESCRIPTION "Accessible binaural HRTF spatializer"
         IS_SYNTH FALSE
@@ -171,18 +188,25 @@ if(SPACETRACE_BUILD_PLUGIN)
             CLAP_FEATURES audio-effect stereo
             CLAP_USE_JUCE_PARAMETER_RANGES ALL
             CLAP_CHECKING_LEVEL Minimal)
-        if(SPACETRACE_BUILD_TESTS AND WIN32)
+        if(SPACETRACE_BUILD_TESTS AND (WIN32 OR APPLE))
             add_executable(spacetrace_clap_tests tests/test_clap_binary.cpp)
             target_include_directories(spacetrace_clap_tests PRIVATE "${CLAP_JUCE_EXTENSIONS_DIR}/clap-libs/clap/include")
             target_compile_definitions(spacetrace_clap_tests PRIVATE
                 SPACETRACE_EXPECTED_VERSION=\"${PROJECT_VERSION}\")
+            target_link_libraries(spacetrace_clap_tests PRIVATE ${CMAKE_DL_LIBS})
             add_dependencies(spacetrace_clap_tests SpaceTrace_CLAP)
-            add_test(NAME spacetrace_clap_tests COMMAND spacetrace_clap_tests $<TARGET_FILE:SpaceTrace_CLAP>)
+            # CLAP hosts pass the bundle path to clap_entry.init on macOS.
+            if(APPLE)
+                set(SPACETRACE_CLAP_TEST_PATH "$<TARGET_BUNDLE_DIR:SpaceTrace_CLAP>")
+            else()
+                set(SPACETRACE_CLAP_TEST_PATH "$<TARGET_FILE:SpaceTrace_CLAP>")
+            endif()
+            add_test(NAME spacetrace_clap_tests COMMAND spacetrace_clap_tests "${SPACETRACE_CLAP_TEST_PATH}")
             set_tests_properties(spacetrace_clap_tests PROPERTIES
                 ENVIRONMENT "SPACETRACE_HEADS_DIR=${CMAKE_CURRENT_SOURCE_DIR}/Heads"
                 TIMEOUT 120)
         endif()
     elseif(SPACETRACE_BUILD_CLAP)
-        message(FATAL_ERROR "CLAP requested but clap-juce-extensions is absent. Run FETCH_CLAP_WINDOWS.ps1 or set CLAP_JUCE_EXTENSIONS_DIR.")
+        message(FATAL_ERROR "CLAP requested but clap-juce-extensions is absent. Run FETCH_CLAP_WINDOWS.ps1 (Windows) or scripts/fetch_deps.py (macOS), or set CLAP_JUCE_EXTENSIONS_DIR.")
     endif()
 endif()

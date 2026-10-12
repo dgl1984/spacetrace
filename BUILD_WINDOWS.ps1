@@ -9,7 +9,7 @@ $ClapExt = if ($env:CLAP_JUCE_EXTENSIONS_DIR) { $env:CLAP_JUCE_EXTENSIONS_DIR } 
 
 Start-Transcript -Path $Log -Force | Out-Null
 try {
-    Write-Host '=== SpaceTrace 1.0.1 - VST3 + CLAP Validation ==='
+    Write-Host '=== SpaceTrace 1.0.2 - VST3 + CLAP Validation ==='
     Write-Host "Source: $Root"
 
     if (-not (Get-Command cmake -ErrorAction SilentlyContinue)) { throw 'CMake is required and was not found on PATH.' }
@@ -80,7 +80,7 @@ try {
 
     Write-Host '=== Build tests and processor integration ==='
     & cmake --build $Build --config Release --target `
-        spacetrace_core_tests spacetrace_dataset_tests spacetrace_plugin_tests spacetrace_clap_tests | Out-Host
+        spacetrace_core_tests spacetrace_dataset_tests spacetrace_plugin_tests spacetrace_mono_level_tests spacetrace_clap_tests | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "Test build failed with exit code $LASTEXITCODE" }
 
     Write-Host '=== Run tests ==='

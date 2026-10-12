@@ -1,4 +1,4 @@
-"""Check cascade equivalence, input preservation, and the approved direct correction pairs."""
+"""Check cascade equivalence, input preservation, and the approved composed correction pairs."""
 from pathlib import Path
 import hashlib
 import json
@@ -71,15 +71,18 @@ class CompositionTests(unittest.TestCase):
                     compose(d / "base.wav", d / "extra.wav", d / "bad.wav", tail_fade_ms=fade)
                 self.assertFalse((d / "bad.wav").exists())
 
-    def test_approved_direct_pairs_in_plugin_order(self):
+    def test_approved_composed_pairs_in_plugin_order(self):
         # Freeze the listening-approved release assets by head identity. This
         # catches swapping valid correction files between head packages.
-        approved = {'IRCAM_1050': ['5c677b8f5ffe1de4b83872ec6e3b260e7a8a4b44cd26444c0f1a352eb43944d1', 'c8aee734e886ed298fe1879b2bb09d4f9a9a1ab514cbd9ad478b5719c11ee480'], 'MIT_KEMAR_Normal': ['85a4ce47a27b52113fb81308243a0067503fe7edb7795502266738c6c4a81564', '24bb6d3b272c1a01f9b73a55517717a9ff500c4c1d0a3a669c64596bcff038df'], 'KU100_SADIE_D1': ['0884796eae4aa01bba4f2b63b58cc0ef2f78fd1f1e0405b20c9b2bbedcb211e4', '081a0d7777884111443d58a785b94854ccae5c0e3926628039a6a03e60392bb8'], 'KU100_FULL2DEG': ['f073a875d87e314006d804fdfc91369899db857f06a6ce11c14f9a431f8fcecf', '57be05cb7d49a52b9e552390ee1a87fcdbf32340880f271e1f7402d8909d7207'], 'FABIAN_HATO0': ['29c7dae2e00bf49cb720f8b3cc246a3fd1fc37a0f1ab47bffed63d10b0ce03c3', 'e145141883da3b02af076241fabbbc3bb07c932a2357b5348c06fe0f9cc1737c']}
+        approved = {'IRCAM_1050': ['d82e500be6f3b5aa03e78a732b2502e6ab4de98cf94a8776ba9b9b77e8d96f7d', '55522b7727cb8c888050e806c4c1af7422cae2e2d308ed9ee69fd431e9e7f681'], 'MIT_KEMAR_Normal': ['0cf41d3a5dba9742805d77bf7de05e4b2e50c25bb1c41cc0efde7cb5bfd08705', 'cfdcd48d7060af0f11982a68b1b57cb85a167740378feebacf1fc463d48d86ed'], 'KU100_SADIE_D1': ['847f5eade8ef4ef07a5d40ddbf0e0ff6ec10b2057c63d7221d3fb5b60fdccb8f', '3de19222e0e7df4df35099a2771423b06efc1d5ec71fb8db36ef2da9620949c0'], 'KU100_FULL2DEG': ['78f6cd5b413da74afc648084aabc924ec311d6b7a1a223e515fbad5e2aec15d3', 'e964bcc077d9ddef4367efc7f418672adc1f56fb761e7cfc3e897f87cb085e72'], 'FABIAN_HATO0': ['934e0188f7e1dbd26c2545ccaf075a1be516c34c429616ea22d4e967e92d5960', 'bb599aae060663186eff79747cf7ba5a7b603b9356442766413fd90fcac35c7f']}
         for folder, digests in approved.items():
             head = ROOT / "Heads" / folder
             manifest = json.loads((head / "manifest.json").read_text(encoding="utf-8"))
             provenance = json.loads((head / "provenance.json").read_text(encoding="utf-8"))
-            self.assertNotIn("stereoPairResidualComposition", provenance)
+            composition = provenance["stereoPairPostCorrection"]
+            self.assertEqual(composition["outputTaps"], 8640)
+            self.assertEqual(composition["tailFadeSamples"], 1920)
+            self.assertEqual(composition["fullConvolutionTaps"], 17279)
             for side, digest in zip(("Left", "Right"), digests):
                 key = "stereoPair" + side + "Correction"
                 output = head / manifest[key + "File"]
@@ -89,6 +92,7 @@ class CompositionTests(unittest.TestCase):
                 self.assertEqual(rate, 48000)
                 self.assertEqual(len(samples), 8640)
                 self.assertTrue(np.isfinite(samples).all())
+                self.assertEqual(float(samples[-1]), 0.0)
             for key, value in provenance["currentStereoPairFiles"].items():
                 self.assertEqual(manifest[key], value)
 

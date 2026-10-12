@@ -68,7 +68,7 @@ float maxAbs(const juce::AudioBuffer<float>& b) {
 int main() {
     juce::ScopedJuceInitialiser_GUI juceInitialiser;
     try {
-        // Use the production minimum-phase rate converter on the approved direct
+        // Use the production minimum-phase rate converter on the approved composed
         // WAVs. Compare physical-frequency response with the stored 48 kHz IRs.
         {
             const auto heads = juce::File(juce::SystemStats::getEnvironmentVariable("SPACETRACE_HEADS_DIR", ""));
@@ -99,17 +99,22 @@ int main() {
                         const auto converted = spacetrace::resampleCompensation(original, rate);
                         require(converted.impulse.size() >= static_cast<std::size_t>((original.impulse.size() - 1) * rate / original.sampleRate),
                                 "rate conversion truncated the direct correction tail");
-                        for (int step = 0; step <= 48; ++step) {
-                            const double hz = 20.0 * std::pow(1000.0, step / 48.0);
+                        // Include the narrow low-frequency features in the composed
+                        // corrections, which a sparse 49-point sweep can miss.
+                        for (int step = 0; step <= 192; ++step) {
+                            const double hz = 20.0 * std::pow(1000.0, step / 192.0);
                             const double delta = std::abs(20.0 * std::log10(magnitude(converted, hz) / magnitude(original, hz)));
-                            require(std::isfinite(delta) && delta < 0.05,
-                                    "direct correction response changed during host-rate conversion");
+                            if (!std::isfinite(delta) || delta >= 0.05) {
+                                std::cerr << folder << " " << side << " at " << rate
+                                          << " Hz, frequency " << hz << ": " << delta << " dB\n";
+                                throw std::runtime_error("correction response changed during host-rate conversion");
+                            }
                             worstDb = std::max(worstDb, delta);
                         }
                     }
                 }
             }
-            std::cout << "Direct correction maximum rate-conversion deviation: " << worstDb << " dB\n";
+            std::cout << "Composed correction maximum rate-conversion deviation: " << worstDb << " dB\n";
         }
         // Stereo Pair geometry is shared by DSP and the read-only display.
         // Width Offset bows both source positions symmetrically around the
@@ -208,16 +213,16 @@ int main() {
                 "same-rate instances did not share immutable prepared head data");
         require(sharedA->hasCompensation, "IRCAM external correction is missing");
         require(sharedA->stereoPair.hasCompensation, "IRCAM Stereo Pair correction pair is missing");
-        require(std::abs(sharedA->stereoPair.leftGainDb - (-2.157633f)) < 0.01f &&
-                std::abs(sharedA->stereoPair.rightGainDb - 2.157633f) < 0.01f,
+        require(std::abs(sharedA->stereoPair.leftGainDb - (-1.595350f)) < 0.01f &&
+                std::abs(sharedA->stereoPair.rightGainDb - 1.595350f) < 0.01f,
                 "IRCAM Stereo Pair source-balance calibration changed unexpectedly");
-        require(std::abs(sharedA->stereoPair.trimDb - (-1.522492f)) < 0.01f,
+        require(std::abs(sharedA->stereoPair.trimDb - (-0.859045f)) < 0.01f,
                 "IRCAM Stereo Pair level calibration changed unexpectedly");
 
         auto kemar = HeadRepository::instance().prepare(BuiltInDatasetId::MitKemarNormalPinna, 48000.0, cacheError);
         require(kemar != nullptr && kemar->stereoPair.hasCompensation,
                 "KEMAR Stereo Pair correction pair failed to prepare");
-        require(std::abs(kemar->stereoPair.trimDb - (-4.373117f)) < 0.02f,
+        require(std::abs(kemar->stereoPair.trimDb - (-4.873236f)) < 0.02f,
                 "KEMAR Stereo Pair level calibration changed unexpectedly");
 
         auto full2Deg = HeadRepository::instance().prepare(BuiltInDatasetId::ThkKu100Full2Deg, 48000.0, cacheError);

@@ -1,18 +1,26 @@
 # SpaceTrace — Put a sound somewhere
 
-Move a voice around the listener, lift an effect above them, or turn the angle of a stereo field recording within a soundscape. SpaceTrace is a binaural spatializer for headphone listening, available as a Windows x64 VST3 and CLAP plug-in.
+Move a voice around the listener, lift an effect above them, or turn the angle of a stereo field recording within a soundscape. SpaceTrace is a binaural spatializer for headphone listening, available as a Windows x64 VST3 and CLAP plug-in and a macOS Audio Unit, VST3 and CLAP plug-in.
 
 It uses measurements of how sound reaches the ears from different directions to give each placement its timing, level, and tonal cues. Five heads offer different sets of those cues. Their prepared EQ and level calibration make it easier to compare the placement and movement you hear.
 
-[**Download SpaceTrace 1.0.1**](https://github.com/dgl1984/spacetrace/releases/latest) · [**Read the manual**](Docs/MANUAL.md)
+[**Download SpaceTrace 1.0.2**](https://github.com/dgl1984/spacetrace/releases/latest) · [**Read the manual**](Docs/MANUAL.md)
 
 ## Install
 
-1. Download **SpaceTrace_1.0.1_Windows_x64.zip** from the release page and extract it.
+### Windows
+
+1. Download **SpaceTrace_1.0.2_Windows_x64.zip** from the release page and extract it.
 2. Place the complete `SpaceTrace` folder in a plug-in location scanned by your DAW. Its plug-in settings or installation guide will show which locations it uses. Keep the accompanying folders together: `Heads/` contains the head models, corrections, and calibration settings.
 3. Scan for new plug-ins, then insert **SpaceTrace** on an audio track. Choose VST3 or CLAP according to your DAW's support; both provide the same controls and sound.
 
-When updating, replace the accompanying folders along with the plug-ins. The manual explains [installation](Docs/MANUAL.md#install-spacetrace) and [keeping the head data used by an earlier project](Docs/MANUAL.md#updates-and-project-recall).
+### macOS
+
+1. Download **SpaceTrace_1.0.2_macOS_Universal.dmg** from the release page and open it. It runs on Apple silicon and Intel Macs with macOS 12 or later.
+2. Open **Install SpaceTrace.pkg**. If macOS cannot verify the developer, choose Open Anyway in System Settings > Privacy & Security, then follow the installer. It installs the Audio Unit, VST3 and CLAP plug-ins; each carries its own heads, so deleting a plug-in uninstalls it. The disk image also holds the manual, custom-head tools and licences.
+3. Rescan plug-ins, then insert **SpaceTrace** on an audio track. Logic Pro and GarageBand use the Audio Unit.
+
+When updating on Windows, replace the accompanying folders along with the plug-ins; on macOS, run the new installer. The manual explains [installation](Docs/MANUAL.md#install-spacetrace) and [keeping the head data used by an earlier project](Docs/MANUAL.md#updates-and-project-recall).
 
 ## Try a moving sound
 
@@ -45,6 +53,10 @@ SpaceTrace also includes **Papa Pan**, a recreation of the horizontal panning ap
 Load a correction WAV to shape the tone, or prepare a custom head from compatible SOFA spatial-measurement data. The [custom-head guide](Docs/CUSTOM_HEADS.md) and [script reference](scripts/README.md) cover conversion, measurement, correction, and packaging.
 
 [Tone Trace](https://github.com/dgl1984/ToneTrace) is the separate frequency-response comparison and correction-design tool used to prepare the supplied heads.
+
+## Contributors
+
+The macOS port was contributed by [Victor Tsaran (@vick08)](https://github.com/vick08), adding native Apple silicon and Intel support with Audio Unit, VST3, and CLAP builds. [See his contribution](https://github.com/dgl1984/spacetrace/pull/1).
 
 ## Licence
 

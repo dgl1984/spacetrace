@@ -2,7 +2,7 @@
 """Stage the intentionally small SpaceTrace portable release tree.
 
 This script is release infrastructure, not part of the public scripts bundle.
-It centralizes the public-file whitelist so BUILD_WINDOWS.ps1 cannot
+It centralizes the public-file whitelist so BUILD_WINDOWS.ps1 and BUILD_MACOS.sh cannot
 accidentally ship development handoffs, audits, source, or build dependencies.
 """
 from __future__ import annotations
@@ -21,6 +21,18 @@ PUBLIC_TOP_LEVEL = {
     "README.md",
     "LICENSE.txt",
 }
+# macOS releases add the Audio Unit bundle, and each plug-in bundle carries its
+# own heads and licences so deleting the bundle removes everything it installed.
+MACOS_AU_NAME = "SpaceTrace.component"
+MACOS_BUNDLES = ("SpaceTrace.vst3", "SpaceTrace.clap", MACOS_AU_NAME)
+MACOS_PUBLIC_TOP_LEVEL = (PUBLIC_TOP_LEVEL - {"Heads"}) | {MACOS_AU_NAME}
+MACOS_BUNDLE_RESOURCES = ("Heads", "Licenses", "LICENSE.txt")
+REQUIRED_LICENSES = ("THIRD_PARTY_NOTICES.txt", "IRCAM_LISTEN_NOTICE.txt",
+                     "MIT_KEMAR_NOTICE.txt", "SADIE_II_LICENSE.txt",
+                     "FULL2DEG_CC_BY_SA_3_0.txt", "FABIAN_CC_BY_4_0.txt",
+                     "JUCE_NOTICE.txt", "CLAP_LICENSE.txt",
+                     "CLAP_HELPERS_LICENSE.txt", "CLAP_JUCE_EXTENSIONS_LICENSE.txt")
+EXPECTED_HEADS = {"IRCAM_1050", "MIT_KEMAR_Normal", "KU100_SADIE_D1", "KU100_FULL2DEG", "FABIAN_HATO0"}
 
 PUBLIC_DOC_FILES = {
     "MANUAL.md",
@@ -84,11 +96,33 @@ def copy_path(src: Path, dst: Path) -> None:
         shutil.copy2(src, dst)
 
 
-def validate_public_tree(root: Path) -> None:
+def validate_licenses(licenses: Path, label: str) -> None:
+    for required_license in REQUIRED_LICENSES:
+        if not (licenses / required_license).is_file():
+            die(f"required release license/notice is missing: {label}/{required_license}")
+
+
+def validate_heads(heads: Path) -> None:
+    if not heads.is_dir():
+        die(f"shipping heads are missing: {heads}")
+    head_dirs = {p.name for p in heads.iterdir() if p.is_dir()}
+    if head_dirs != EXPECTED_HEADS:
+        die(f"shipping head set changed unexpectedly: {sorted(head_dirs)}")
+
+    for head in sorted(heads.iterdir()):
+        if not head.is_dir():
+            continue
+        for required in ("head.sthrtf", "manifest.json", "provenance.json", "LICENSE.txt"):
+            if not (head / required).is_file():
+                die(f"head {head.name} is missing public provenance/license asset {required}")
+
+
+def validate_public_tree(root: Path, au: bool = False) -> None:
+    expected = MACOS_PUBLIC_TOP_LEVEL if au else PUBLIC_TOP_LEVEL
     actual = {p.name for p in root.iterdir()}
-    if actual != PUBLIC_TOP_LEVEL:
-        missing = sorted(PUBLIC_TOP_LEVEL - actual)
-        extra = sorted(actual - PUBLIC_TOP_LEVEL)
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
         die(f"public root mismatch; missing={missing}, extra={extra}")
 
     for p in root.rglob("*"):
@@ -107,25 +141,17 @@ def validate_public_tree(root: Path) -> None:
     if script_files != PUBLIC_SCRIPT_FILES or script_dirs:
         die(f"scripts whitelist mismatch; files={sorted(script_files)}, dirs={sorted(script_dirs)}")
 
-    for required_license in ("THIRD_PARTY_NOTICES.txt", "IRCAM_LISTEN_NOTICE.txt",
-                             "MIT_KEMAR_NOTICE.txt", "SADIE_II_LICENSE.txt",
-                             "FULL2DEG_CC_BY_SA_3_0.txt", "FABIAN_CC_BY_4_0.txt",
-                             "JUCE_NOTICE.txt", "CLAP_LICENSE.txt",
-                             "CLAP_HELPERS_LICENSE.txt", "CLAP_JUCE_EXTENSIONS_LICENSE.txt"):
-        if not (root / "Licenses" / required_license).is_file():
-            die(f"required release license/notice is missing: Licenses/{required_license}")
+    validate_licenses(root / "Licenses", "Licenses")
+    if not au:
+        validate_heads(root / "Heads")
+        return
 
-    head_dirs = {p.name for p in (root / "Heads").iterdir() if p.is_dir()}
-    expected_heads = {"IRCAM_1050", "MIT_KEMAR_Normal", "KU100_SADIE_D1", "KU100_FULL2DEG", "FABIAN_HATO0"}
-    if head_dirs != expected_heads:
-        die(f"shipping head set changed unexpectedly: {sorted(head_dirs)}")
-
-    for head in sorted((root / "Heads").iterdir()):
-        if not head.is_dir():
-            continue
-        for required in ("head.sthrtf", "manifest.json", "provenance.json", "LICENSE.txt"):
-            if not (head / required).is_file():
-                die(f"head {head.name} is missing public provenance/license asset {required}")
+    for bundle in MACOS_BUNDLES:
+        resources = root / bundle / "Contents" / "Resources"
+        validate_heads(resources / "Heads")
+        validate_licenses(resources / "Licenses", f"{bundle}/Contents/Resources/Licenses")
+        if not (resources / "LICENSE.txt").is_file():
+            die(f"first-party licence is missing from {bundle}/Contents/Resources")
 
 
 def validate_output_location(source_root: Path, output: Path, allowed_output_root: Path | None = None) -> None:
@@ -151,7 +177,8 @@ def validate_output_location(source_root: Path, output: Path, allowed_output_roo
         die(f"release output is outside the explicitly allowed output root: {output}")
 
 
-def stage(source_root: Path, vst3: Path, clap: Path, output: Path, allowed_output_root: Path | None = None) -> None:
+def stage(source_root: Path, vst3: Path, clap: Path, output: Path, allowed_output_root: Path | None = None,
+          au: Path | None = None) -> None:
     source_root = source_root.resolve()
     output = output.resolve()
     validate_output_location(source_root, output, allowed_output_root)
@@ -164,7 +191,14 @@ def stage(source_root: Path, vst3: Path, clap: Path, output: Path, allowed_outpu
 
     copy_path(vst3, output / "SpaceTrace.vst3")
     copy_path(clap, output / "SpaceTrace.clap")
-    copy_path(source_root / "Heads", output / "Heads")
+    if au is None:
+        copy_path(source_root / "Heads", output / "Heads")
+    else:
+        copy_path(au, output / MACOS_AU_NAME)
+        for bundle in MACOS_BUNDLES:
+            resources = output / bundle / "Contents" / "Resources"
+            for name in MACOS_BUNDLE_RESOURCES:
+                copy_path(source_root / name, resources / name)
     copy_path(source_root / "Licenses", output / "Licenses")
     copy_path(source_root / "README.md", output / "README.md")
     copy_path(source_root / "LICENSE.txt", output / "LICENSE.txt")
@@ -179,18 +213,19 @@ def stage(source_root: Path, vst3: Path, clap: Path, output: Path, allowed_outpu
     for name in sorted(PUBLIC_SCRIPT_FILES):
         copy_path(source_root / "scripts" / name, scripts_out / name)
 
-    validate_public_tree(output)
+    validate_public_tree(output, au=au is not None)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Stage and validate the clean SpaceTrace portable release package.")
     ap.add_argument("--source-root", type=Path, default=Path(__file__).resolve().parents[1], help="SpaceTrace source checkpoint root (default: parent of scripts/).")
     ap.add_argument("--vst3", type=Path, required=True, help="Built SpaceTrace.vst3 file/bundle/directory.")
-    ap.add_argument("--clap", type=Path, required=True, help="Built SpaceTrace.clap binary.")
+    ap.add_argument("--clap", type=Path, required=True, help="Built SpaceTrace.clap binary (Windows) or bundle (macOS).")
+    ap.add_argument("--au", type=Path, help="Built SpaceTrace.component bundle. Selects the macOS layout, with heads inside each bundle.")
     ap.add_argument("--output", type=Path, required=True, help="Destination directory for the portable SpaceTrace package.")
     ap.add_argument("--allowed-output-root", type=Path, help="Explicit safe subtree allowed when staging inside the source tree, e.g. the build directory.")
     args = ap.parse_args()
-    stage(args.source_root, args.vst3, args.clap, args.output, args.allowed_output_root)
+    stage(args.source_root, args.vst3, args.clap, args.output, args.allowed_output_root, args.au)
     print(f"SpaceTrace release staging: PASS: {args.output}")
     return 0
 

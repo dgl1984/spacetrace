@@ -1,6 +1,10 @@
 #include <clap/clap.h>
+#ifdef _WIN32
 #define NOMINMAX
 #include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -17,6 +21,27 @@
 
 namespace {
 void require(bool ok, const char* message) { if (!ok) throw std::runtime_error(message); }
+#ifdef _WIN32
+using Library = HMODULE;
+Library openLibrary(const std::string& path) { return LoadLibraryA(path.c_str()); }
+void* findSymbol(Library library, const char* name) { return reinterpret_cast<void*>(GetProcAddress(library, name)); }
+void closeLibrary(Library library) { FreeLibrary(library); }
+#else
+using Library = void*;
+// A macOS CLAP is a bundle; its executable shares the bundle's base name.
+Library openLibrary(const std::string& path) {
+    auto binary = path;
+#ifdef __APPLE__
+    const auto slash = path.find_last_of('/');
+    auto name = path.substr(slash == std::string::npos ? 0 : slash + 1);
+    if (const auto dot = name.rfind(".clap"); dot != std::string::npos) name.erase(dot);
+    binary = path + "/Contents/MacOS/" + name;
+#endif
+    return dlopen(binary.c_str(), RTLD_NOW | RTLD_LOCAL);
+}
+void* findSymbol(Library library, const char* name) { return dlsym(library, name); }
+void closeLibrary(Library library) { dlclose(library); }
+#endif
 struct HostData { bool audio = false; std::atomic<bool> callback {false}; };
 HostData& data(const clap_host_t* h) { return *static_cast<HostData*>(h->host_data); }
 bool CLAP_ABI mainThread(const clap_host_t*) { return true; }
@@ -44,8 +69,10 @@ struct Instance {
 };
 void drain(Instance& i) {
     if (i.host.callback.exchange(false)) i.p->on_main_thread(i.p);
+#ifdef _WIN32
     MSG msg;
     while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE)) { TranslateMessage(&msg); DispatchMessageW(&msg); }
+#endif
 }
 void parameter(Instance& i, const clap_plugin_params_t* params, clap_id id, double value) {
     clap_event_param_value_t e {};
@@ -74,13 +101,13 @@ int64_t CLAP_ABI readState(const clap_istream_t* s, void* buffer, uint64_t size)
 }
 }
 int main(int argc, char** argv) {
-    HMODULE library = nullptr;
+    Library library = nullptr;
     const clap_plugin_entry_t* entry = nullptr;
     bool initialized = false;
     try {
         require(argc == 2, "supply the CLAP binary path");
-        library = LoadLibraryA(argv[1]); require(library != nullptr, "CLAP DLL load failed");
-        entry = reinterpret_cast<const clap_plugin_entry_t*>(GetProcAddress(library, "clap_entry"));
+        library = openLibrary(argv[1]); require(library != nullptr, "CLAP library load failed");
+        entry = static_cast<const clap_plugin_entry_t*>(findSymbol(library, "clap_entry"));
         require(entry && clap_version_is_compatible(entry->clap_version), "missing or incompatible clap_entry");
         initialized = entry->init(argv[1]); require(initialized, "CLAP entry init failed");
         auto* factory = static_cast<const clap_plugin_factory_t*>(entry->get_factory(CLAP_PLUGIN_FACTORY_ID));
@@ -186,13 +213,13 @@ int main(int argc, char** argv) {
             instance.p->stop_processing(instance.p); instance.processing = false; hostData.audio = false;
             instance.p->deactivate(instance.p); instance.active = false; drain(instance);
         }
-        entry->deinit(); initialized = false; FreeLibrary(library); library = nullptr;
+        entry->deinit(); initialized = false; closeLibrary(library); library = nullptr;
         std::cout << "PASS: CLAP binary metadata, ranges, state with partial I/O, 12 lifecycles, variable blocks, 44.1/48/96 kHz audio\n";
         return 0;
     } catch (const std::exception& e) {
         std::cerr << "FAIL: " << e.what() << '\n';
         if (initialized) entry->deinit();
-        if (library) FreeLibrary(library);
+        if (library) closeLibrary(library);
         return 1;
     }
 }

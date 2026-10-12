@@ -59,8 +59,10 @@ def main():
     plugin_test=read('tests/test_plugin_processor.cpp') if (ROOT/'tests/test_plugin_processor.cpp').exists() else ''
     visual_snapshots=read('tests/visual_snapshots.cpp') if (ROOT/'tests/visual_snapshots.cpp').exists() else ''
     visual_ps=read('BUILD_VISUAL_SNAPSHOTS.ps1') if (ROOT/'BUILD_VISUAL_SNAPSHOTS.ps1').exists() else ''
+    build_mac=read('BUILD_MACOS.sh') if (ROOT/'BUILD_MACOS.sh').exists() else ''
+    fetch_deps=read('scripts/fetch_deps.py') if (ROOT/'scripts/fetch_deps.py').exists() else ''
 
-    require(cmake,'project(SpaceTrace VERSION 1.0.1','1.0.1 project identity missing')
+    require(cmake,'project(SpaceTrace VERSION 1.0.2','1.0.2 project identity missing')
     require(cmake,'PRODUCT_NAME "SpaceTrace"','SpaceTrace product identity missing')
     require(cmake,'FORMATS VST3 Standalone','VST3/Standalone JUCE target missing')
     require(cmake,'clap_juce_extensions_plugin(TARGET SpaceTrace','CLAP wrapper must target the same SpaceTrace JUCE target')
@@ -281,15 +283,19 @@ def main():
     require(requirements,'numpy','scripts/requirements.txt must list NumPy')
     require(requirements,'h5py','scripts/requirements.txt must list h5py')
     require(requirements,'matplotlib','scripts/requirements.txt must list matplotlib for correction documentation plots')
-    require(manual,'0° and 360° are the same physical position','manual must explain the azimuth endpoint/direction convention')
-    require(manual,'https://github.com/dgl1984/ToneTrace/releases','manual must tell users where to obtain Tone Trace')
-    require(manual,'one parameter, one user-facing control','manual must explain the universal-access control contract')
+    # Check useful documentation contracts without freezing its prose or headings.
+    for control in ('Azimuth', 'Elevation', 'Distance', 'Stereo Pair', 'Page Up', 'Page Down'):
+        require(manual, control, f'manual does not document {control}')
+    require(manual,'https://github.com/dgl1984/ToneTrace','manual must link to Tone Trace')
     require(manual,'TH Köln / Bernschütz FULL2DEG KU100','manual must document all five shipping heads')
     require(manual,'python scripts/plot_correction.py','manual must document user-generated correction plots')
-    require(manual,'Page Up/Page Down','manual must document the accessibility coarse-step keys')
-    require(manual,'Shared head loading','manual must document the shared immutable head cache')
-    require(manual,'Sample-rate handling','manual must document host-rate preparation')
-    require(manual,'Apache License 2.0 with the Commons Clause License Condition v1.0','manual must state the first-party licensing decision')
+    require(manual,'../LICENSE.txt','manual must link to the first-party licence')
+    for target in re.findall(r'\[[^\]]*\]\(([^)]+)\)', manual):
+        if target.startswith(('https://', 'http://', '#')):
+            continue
+        path = target.split('#', 1)[0]
+        if not (ROOT / 'Docs' / path).exists():
+            raise AssertionError(f'manual link target is missing: {target}')
     require(build_release_doc,'same `SpaceTrace` JUCE target','build docs must forbid divergent VST3/CLAP implementations')
     require(stage_release,'PUBLIC_TOP_LEVEL','release staging must use an explicit public-root whitelist')
     require(stage_release,'PUBLIC_DOC_FILES','release staging must whitelist public documentation')
@@ -396,6 +402,27 @@ def main():
         require(build_ps,'SpaceTrace_VST3','Windows build does not build the VST3 target')
         require(build_ps,'Nothing was installed automatically','non-installing build contract missing')
         reject(build_ps,'C:\\Program Files\\Common Files\\VST3','build script must not install into system VST3 folders')
+    if build_mac:
+        require(cmake,'SPACETRACE_APPLE_FORMATS AU','macOS release must build the Audio Unit from the shared JUCE target')
+        require(build_mac,'stage_release.py','BUILD_MACOS must use the tested release staging script')
+        require(build_mac,'check_native_package.py','macOS build does not reject a stale Raw KU100 package')
+        require(build_mac,"--compensation-version 'tonetrace-raw-v1'",'macOS stale-package check does not require the current KU100 correction identity')
+        require(build_mac,'SPACETRACE_BUILD_CLAP=ON','macOS release path must build CLAP from the shared JUCE target')
+        require(build_mac,'fetch_deps.py','macOS build must restore the pinned dependencies when absent')
+        require(build_mac,'spacetrace_clap_tests','macOS build does not compile the CLAP binary test')
+        require(build_mac,'validate_heads.py','macOS build does not validate the head packages')
+        require(build_mac,'--require-all','macOS build does not require all release heads')
+        for target in ('SpaceTrace_AU','SpaceTrace_VST3','SpaceTrace_CLAP'):
+            require(build_mac,target,f'macOS build does not build {target}')
+        require(build_mac,'package_macos.py','macOS build does not sign and package the staged release')
+        require(build_mac,'Nothing was installed automatically','non-installing build contract missing')
+        reject(build_mac,'sudo ','macOS build script must not install or escalate privileges')
+        require(head_repo,'getSiblingFile("Resources").getChildFile("Heads")','macOS head locator must find the heads inside the plug-in bundle')
+        require(head_repo,'Application Support/LanesAudio/SpaceTrace/Heads','macOS head locator must honour the per-user replacement heads')
+        require(stage_release,'MACOS_BUNDLE_RESOURCES','macOS staging must place heads and licences inside every bundle')
+    if fetch_deps:
+        require(fetch_deps,'refs/tags/8.0.12','dependency fetcher is not pinned to JUCE 8.0.12')
+        require(fetch_deps,'sha256','dependency fetcher must verify archive hashes')
     if fetch_ps: require(fetch_ps,'8.0.12','JUCE fetch script is not pinned to 8.0.12')
     if fetch_clap_ps:
         require(fetch_clap_ps,'55525c9858d4b25687be7759a5e0f70eccef218e','CLAP wrapper revision is not pinned')
@@ -457,7 +484,7 @@ def main():
     require(editor, 'setResizeLimits(820, 648, 1280, 920)',
             'Minimum editor height must preserve Bypass/Status with exact-entry error visible')
 
-    print('PASS: SpaceTrace 1.0.1 stereo-pair-width source contract')
+    print('PASS: SpaceTrace 1.0.2 stereo-pair-width source contract')
     return 0
 
 if __name__=='__main__':
