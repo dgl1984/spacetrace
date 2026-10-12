@@ -24,7 +24,7 @@ jobs:
         run: |
           root="$PWD"
           for bundle in SpaceTrace.component SpaceTrace.vst3 SpaceTrace.clap; do
-            lipo -verify_arch arm64 x86_64 "$root/build-macos/portable/SpaceTrace/$bundle/Contents/MacOS/SpaceTrace"
+            lipo "$root/build-macos/portable/SpaceTrace/$bundle/Contents/MacOS/SpaceTrace" -verify_arch arm64 x86_64
           done
           ditto "$root/build-macos/portable/SpaceTrace/SpaceTrace.clap" "$RUNNER_TEMP/SpaceTrace.clap"
           cd "$RUNNER_TEMP"
