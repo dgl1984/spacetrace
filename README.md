@@ -4,6 +4,8 @@ Move a voice around the listener, lift an effect above them, or turn the angle o
 
 It uses measurements of how sound reaches the ears from different directions to give each placement its timing, level, and tonal cues. Five heads offer different sets of those cues. Their prepared EQ and level calibration make it easier to compare the placement and movement you hear.
 
+If a program does more than say “Hello, world!” and/or looks well-designed visually, every line responsible for such elevated standards was coded by AI—but the design is mine.
+
 [**Download SpaceTrace 1.0.2**](https://github.com/dgl1984/spacetrace/releases/latest) · [**Read the manual**](Docs/MANUAL.md)
 
 ## Install
@@ -61,3 +63,11 @@ The macOS port was contributed by [Victor Tsaran (@vick08)](https://github.com/v
 ## Licence
 
 SpaceTrace's first-party material uses Apache License 2.0 with the Commons Clause License Condition v1.0; see [LICENSE.txt](LICENSE.txt). The bundled datasets and dependencies carry their own terms in the [third-party notices](Licenses/THIRD_PARTY_NOTICES.txt). Each head also includes its source, processing history, and licence records.
+
+## Contact and support
+
+Questions, bug reports, and accessibility feedback: `info@lanesaudio.com`
+
+SpaceTrace is free. If it is useful to you and you would like to support continued development, donations are welcome but never required:
+
+[Donate via PayPal](https://paypal.me/dgl1984)
